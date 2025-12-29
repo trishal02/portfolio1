@@ -56,8 +56,8 @@ export default function App() {
       period: "Jan 2025 - Oct 2025",
       points: [
         "Developed a scalable PySpark pipeline to preprocess large-scale social media datasets and applied transformer-based models (DistilBERT, RoBERTa, ViT) to classify AI-generated versus authentic content.",
-        "Implemented clustering and visualization workflows with LDA and Plotly to identify misinformation patterns and trends."
-      ]
+        "Implemented clustering and visualization workflows with LDA and Plotly to identify misinformation patterns and trends.",
+      ],
     },
     {
       company: "Bright Curve IT Solutions",
@@ -68,8 +68,8 @@ export default function App() {
         "Deployed a Jenkins-based automation system using TF-IDF matching to detect duplicate issues, reducing manual effort by 60%.",
         "Refactored legacy codebase into microservices using Spring Boot, Docker, and Kubernetes, improving deployment frequency by 18%.",
         "Implemented RESTful APIs to exclude high-propensity users, driving a 17% revenue boost.",
-        "Developed real-time Grafana dashboards integrated with Slack and Splunk, cutting incident resolution time by 45%."
-      ]
+        "Developed real-time Grafana dashboards integrated with Slack and Splunk, cutting incident resolution time by 45%.",
+      ],
     },
     {
       company: "Bright Curve IT Solutions",
@@ -78,32 +78,45 @@ export default function App() {
       points: [
         "Built a RESTful microservice to optimize offer distribution, reducing response time by 40% for over 15,000 daily users.",
         "Improved reliability by achieving 80% unit test coverage through TDD, reducing production bugs by 25%.",
-        "Resolved over 300+ real-time bugs during deployment, significantly enhancing system stability."
-      ]
-    }
+        "Resolved over 300+ real-time bugs during deployment, significantly enhancing system stability.",
+      ],
+    },
   ];
 
   const projects = [
     {
       title: "Social Media Election Analysis Platform",
       period: "Sep 2024 - Dec 2024",
-      description: "Developed a data pipeline to collect election discussions from Reddit and 4chan.",
+      description:
+        "Developed a data pipeline to collect election discussions from Reddit and 4chan.",
       tech: "Python, PostgreSQL, OAuth, Data Pipeline",
       points: [
         "Designed scalable PostgreSQL architecture achieving 90%+ uptime with 127K+ Reddit posts daily.",
-        "Tackled API limitations and dynamic data filtering for continuous data flow."
-      ]
+        "Tackled API limitations and dynamic data filtering for continuous data flow.",
+      ],
     },
     {
       title: "Crime Analysis and Prediction System",
       period: "Oct 2022 - Mar 2023",
-      description: "Predictive analytics system using PySpark to forecast crime patterns.",
+      description:
+        "Predictive analytics system using PySpark to forecast crime patterns.",
       tech: "PySpark, LSTM, Prophet, Pandas",
       points: [
         "Forecasted crime patterns and identified high-risk areas using distributed Spark clusters.",
-        "Engineered a scalable data processing pipeline to generate crime hotspot visualizations for law enforcement."
-      ]
-    }
+        "Engineered a scalable data processing pipeline to generate crime hotspot visualizations for law enforcement.",
+      ],
+    },
+    {
+      title: "Expensometer ",
+      period: "Feb 2022 - Apr 2022",
+      description:
+        "• Designed a web application to manage all transactions performed by a user to analyze spending patterns and manage expenditures.",
+      tech: "HTML, CSS, JavaScript, Material-UI, React.js, Firebase",
+      points: [
+        "implemented a special feature allowing users to log transactions using audio inputs.",
+        " Methodology: Powered by Speechly to capture and process input.",
+      ],
+    },
   ];
 
   return (
@@ -127,9 +140,15 @@ export default function App() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (
-                <X className="w-8 h-8 transition-colors duration-300" strokeWidth={2} />
+                <X
+                  className="w-8 h-8 transition-colors duration-300"
+                  strokeWidth={2}
+                />
               ) : (
-                <Menu className="w-8 h-8 transition-colors duration-300" strokeWidth={2} />
+                <Menu
+                  className="w-8 h-8 transition-colors duration-300"
+                  strokeWidth={2}
+                />
               )}
             </button>
 
@@ -138,8 +157,10 @@ export default function App() {
                 ref={menuRef}
                 className="absolute top-full left-0 w-[200px] md:w-[240px] border-none shadow-2xl mt-2 ml-4 p-4 rounded-lg z-[100] backdrop-blur-md"
                 style={{
-                  backgroundColor: isDark ? "rgba(0,0,0,0.9)" : "rgba(255,255,255,0.9)",
-                  color: isDark ? "white" : "black"
+                  backgroundColor: isDark
+                    ? "rgba(0,0,0,0.9)"
+                    : "rgba(255,255,255,0.9)",
+                  color: isDark ? "white" : "black",
                 }}
               >
                 {menuItems.map((item) => (
@@ -157,7 +178,10 @@ export default function App() {
           </div>
 
           {/* Signature */}
-          <div className="text-3xl font-bold tracking-tighter" style={{ fontFamily: "'Fira Code', monospace" }}>
+          <div
+            className="text-3xl font-bold tracking-tighter"
+            style={{ fontFamily: "'Fira Code', monospace" }}
+          >
             TRI
           </div>
 
@@ -166,7 +190,9 @@ export default function App() {
             type="button"
             onClick={toggleTheme}
             className="relative w-14 h-7 rounded-full transition-colors border border-neutral-700"
-            style={{ backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)" }}
+            style={{
+              backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)",
+            }}
             aria-label="Toggle theme"
           >
             <div
@@ -180,7 +206,10 @@ export default function App() {
       </header>
 
       {/* Hero Section */}
-      <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+      <section
+        id="home"
+        className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      >
         {/* Centered Main Name */}
         <div className="relative z-10 text-center px-4">
           <div>
@@ -233,16 +262,27 @@ export default function App() {
 
       {/* About Section */}
       <section id="about" className="px-6 py-20 max-w-4xl mx-auto">
-        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">About Me</h2>
+        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">
+          About Me
+        </h2>
         <p className="text-2xl md:text-4xl font-light leading-relaxed">
-          Software Developer with expertise in <span className="text-[#F9A66E]">C++ and Python</span>, specializing in backend development and distributed computing.
-          Experienced in designing scalable, data-driven applications. Certified in AWS Cloud, with a passion for leveraging technical skills to enhance backend engineering projects.
+          Software Developer with expertise in{" "}
+          <span className="text-[#F9A66E]">C++ and Python</span>, specializing
+          in backend development and distributed computing. Experienced in
+          designing scalable, data-driven applications. Certified in AWS Cloud,
+          with a passion for leveraging technical skills to enhance backend
+          engineering projects.
         </p>
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="px-6 py-20 max-w-6xl mx-auto bg-neutral-50/5 dark:bg-neutral-900/20 rounded-3xl my-10">
-        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">Work Experience</h2>
+      <section
+        id="experience"
+        className="px-6 py-20 max-w-6xl mx-auto bg-neutral-50/5 dark:bg-neutral-900/20 rounded-3xl my-10"
+      >
+        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">
+          Work Experience
+        </h2>
         <div className="space-y-16">
           {experience.map((job, index) => (
             <div key={index} className="grid md:grid-cols-4 gap-6">
@@ -251,7 +291,9 @@ export default function App() {
                 <p className="text-neutral-500 mt-1 text-sm">{job.period}</p>
               </div>
               <div className="md:col-span-3">
-                <h4 className="text-2xl font-semibold mb-4 text-[#F9A66E]">{job.role}</h4>
+                <h4 className="text-2xl font-semibold mb-4 text-[#F9A66E]">
+                  {job.role}
+                </h4>
                 <ul className="space-y-3 text-neutral-400">
                   {job.points.map((point, i) => (
                     <li key={i} className="leading-relaxed flex items-start">
@@ -268,17 +310,33 @@ export default function App() {
 
       {/* Projects Section */}
       <section id="projects" className="px-6 py-20 max-w-6xl mx-auto">
-        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">Projects</h2>
+        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">
+          Projects
+        </h2>
         <div className="grid md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
-            <div key={index} className="group border border-neutral-200 dark:border-neutral-800 p-8 rounded-2xl hover:border-[#F9A66E] transition-colors duration-500">
+            <div
+              key={index}
+              className="group border border-neutral-200 dark:border-neutral-800 p-8 rounded-2xl hover:border-[#F9A66E] transition-colors duration-500"
+            >
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-2xl font-bold group-hover:text-[#F9A66E] transition-colors">{project.title}</h3>
-                <span className="text-xs font-mono py-1 px-2 rounded-full border border-neutral-700 text-neutral-500">{project.period}</span>
+                <h3 className="text-2xl font-bold group-hover:text-[#F9A66E] transition-colors">
+                  {project.title}
+                </h3>
+                <span className="text-xs font-mono py-1 px-2 rounded-full border border-neutral-700 text-neutral-500">
+                  {project.period}
+                </span>
               </div>
-              <p className="text-neutral-400 mb-6 min-h-[50px]">{project.description}</p>
+              <p className="text-neutral-400 mb-6 min-h-[50px]">
+                {project.description}
+              </p>
               <div className="mb-6">
-                <p className="text-sm font-bold text-neutral-300 mb-2">Tech: <span className="text-neutral-500 font-normal">{project.tech}</span></p>
+                <p className="text-sm font-bold text-neutral-300 mb-2">
+                  Tech:{" "}
+                  <span className="text-neutral-500 font-normal">
+                    {project.tech}
+                  </span>
+                </p>
               </div>
               <ul className="space-y-2 text-sm text-neutral-500">
                 {project.points.map((pt, i) => (
@@ -291,9 +349,14 @@ export default function App() {
       </section>
 
       {/* Education & Skills */}
-      <section id="education" className="px-6 py-20 max-w-6xl mx-auto grid md:grid-cols-2 gap-16">
+      <section
+        id="education"
+        className="px-6 py-20 max-w-6xl mx-auto grid md:grid-cols-2 gap-16"
+      >
         <div>
-          <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">Education</h2>
+          <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">
+            Education
+          </h2>
           <div className="space-y-8">
             <div>
               <h3 className="text-xl font-bold">Binghamton University, SUNY</h3>
@@ -301,17 +364,39 @@ export default function App() {
               <p className="text-neutral-500 text-sm">GPA: 3.53/4</p>
             </div>
             <div>
-              <h3 className="text-xl font-bold">Indian Institute of Information & Technology, Kottayam</h3>
+              <h3 className="text-xl font-bold">
+                Indian Institute of Information & Technology, Kottayam
+              </h3>
               <p className="text-[#F9A66E]">Bachelor of Technology, CSE</p>
               <p className="text-neutral-500 text-sm">GPA: 3.6/4</p>
             </div>
           </div>
         </div>
         <div id="skills">
-          <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">Technical Skills</h2>
+          <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">
+            Technical Skills
+          </h2>
           <div className="flex flex-wrap gap-2">
-            {["Python", "C++", "Java", "JavaScript", "AWS", "Docker", "Kubernetes", "React", "PostgreSQL", "MongoDB", "PySpark", "Git", "Linux", "RESTful APIs"].map((skill) => (
-              <span key={skill} className="px-4 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-sm font-medium hover:bg-[#F9A66E] hover:text-black transition-colors cursor-default">
+            {[
+              "Python",
+              "C++",
+              "Java",
+              "JavaScript",
+              "AWS",
+              "Docker",
+              "Kubernetes",
+              "React",
+              "PostgreSQL",
+              "MongoDB",
+              "PySpark",
+              "Git",
+              "Linux",
+              "RESTful APIs",
+            ].map((skill) => (
+              <span
+                key={skill}
+                className="px-4 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-sm font-medium hover:bg-[#F9A66E] hover:text-black transition-colors cursor-default"
+              >
                 {skill}
               </span>
             ))}
@@ -320,10 +405,18 @@ export default function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="px-6 py-32 text-center bg-neutral-900 text-white relative">
-        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">Contact</h2>
+      <section
+        id="contact"
+        className="px-6 py-32 text-center bg-neutral-900 text-white relative"
+      >
+        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">
+          Contact
+        </h2>
         <div className="flex flex-col items-center gap-6">
-          <a href="mailto:tindireddy@binghamton.edu" className="text-3xl md:text-5xl font-bold hover:text-[#F9A66E] transition-colors">
+          <a
+            href="mailto:tindireddy@binghamton.edu"
+            className="text-3xl md:text-5xl font-bold hover:text-[#F9A66E] transition-colors"
+          >
             tindireddy@binghamton.edu
           </a>
           <p className="text-xl text-neutral-400">+1-607-232-1218</p>
