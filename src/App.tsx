@@ -122,7 +122,7 @@ export default function App() {
             <button
               ref={buttonRef}
               type="button"
-              className="p-2 transition-colors duration-300 z-[60] hover:text-[#C3E41D]"
+              className="p-2 transition-colors duration-300 z-[60] hover:text-[#F9A66E]"
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -146,7 +146,7 @@ export default function App() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="block text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300 hover:text-[#C3E41D]"
+                    className="block text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300 hover:text-[#F9A66E]"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
@@ -190,7 +190,7 @@ export default function App() {
               animateBy="letters"
               direction="top"
               className="font-black text-[12vw] leading-[0.8] tracking-tighter uppercase justify-center whitespace-nowrap"
-              style={{ color: "#C3E41D", fontFamily: "'Inter', sans-serif" }}
+              style={{ color: "#F9A66E", fontFamily: "'Inter', sans-serif" }}
             />
           </div>
           <div>
@@ -200,7 +200,7 @@ export default function App() {
               animateBy="letters"
               direction="top"
               className="font-black text-[12vw] leading-[0.8] tracking-tighter uppercase justify-center whitespace-nowrap"
-              style={{ color: "#C3E41D", fontFamily: "'Inter', sans-serif" }}
+              style={{ color: "#F9A66E", fontFamily: "'Inter', sans-serif" }}
             />
           </div>
 
@@ -233,16 +233,16 @@ export default function App() {
 
       {/* About Section */}
       <section id="about" className="px-6 py-20 max-w-4xl mx-auto">
-        <h2 className="text-sm font-bold tracking-widest text-[#C3E41D] mb-8 uppercase">About Me</h2>
+        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">About Me</h2>
         <p className="text-2xl md:text-4xl font-light leading-relaxed">
-          Software Developer with expertise in <span className="text-[#C3E41D]">C++ and Python</span>, specializing in backend development and distributed computing.
+          Software Developer with expertise in <span className="text-[#F9A66E]">C++ and Python</span>, specializing in backend development and distributed computing.
           Experienced in designing scalable, data-driven applications. Certified in AWS Cloud, with a passion for leveraging technical skills to enhance backend engineering projects.
         </p>
       </section>
 
       {/* Experience Section */}
       <section id="experience" className="px-6 py-20 max-w-6xl mx-auto bg-neutral-50/5 dark:bg-neutral-900/20 rounded-3xl my-10">
-        <h2 className="text-sm font-bold tracking-widest text-[#C3E41D] mb-12 uppercase">Work Experience</h2>
+        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">Work Experience</h2>
         <div className="space-y-16">
           {experience.map((job, index) => (
             <div key={index} className="grid md:grid-cols-4 gap-6">
@@ -251,7 +251,7 @@ export default function App() {
                 <p className="text-neutral-500 mt-1 text-sm">{job.period}</p>
               </div>
               <div className="md:col-span-3">
-                <h4 className="text-2xl font-semibold mb-4 text-[#C3E41D]">{job.role}</h4>
+                <h4 className="text-2xl font-semibold mb-4 text-[#F9A66E]">{job.role}</h4>
                 <ul className="space-y-3 text-neutral-400">
                   {job.points.map((point, i) => (
                     <li key={i} className="leading-relaxed flex items-start">
@@ -268,12 +268,12 @@ export default function App() {
 
       {/* Projects Section */}
       <section id="projects" className="px-6 py-20 max-w-6xl mx-auto">
-        <h2 className="text-sm font-bold tracking-widest text-[#C3E41D] mb-12 uppercase">Projects</h2>
+        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">Projects</h2>
         <div className="grid md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
-            <div key={index} className="group border border-neutral-200 dark:border-neutral-800 p-8 rounded-2xl hover:border-[#C3E41D] transition-colors duration-500">
+            <div key={index} className="group border border-neutral-200 dark:border-neutral-800 p-8 rounded-2xl hover:border-[#F9A66E] transition-colors duration-500">
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-2xl font-bold group-hover:text-[#C3E41D] transition-colors">{project.title}</h3>
+                <h3 className="text-2xl font-bold group-hover:text-[#F9A66E] transition-colors">{project.title}</h3>
                 <span className="text-xs font-mono py-1 px-2 rounded-full border border-neutral-700 text-neutral-500">{project.period}</span>
               </div>
               <p className="text-neutral-400 mb-6 min-h-[50px]">{project.description}</p>
@@ -293,25 +293,25 @@ export default function App() {
       {/* Education & Skills */}
       <section id="education" className="px-6 py-20 max-w-6xl mx-auto grid md:grid-cols-2 gap-16">
         <div>
-          <h2 className="text-sm font-bold tracking-widest text-[#C3E41D] mb-8 uppercase">Education</h2>
+          <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">Education</h2>
           <div className="space-y-8">
             <div>
               <h3 className="text-xl font-bold">Binghamton University, SUNY</h3>
-              <p className="text-[#C3E41D]">Master's, Computer Science</p>
+              <p className="text-[#F9A66E]">Master's, Computer Science</p>
               <p className="text-neutral-500 text-sm">GPA: 3.53/4</p>
             </div>
             <div>
               <h3 className="text-xl font-bold">Indian Institute of Information & Technology, Kottayam</h3>
-              <p className="text-[#C3E41D]">Bachelor of Technology, CSE</p>
+              <p className="text-[#F9A66E]">Bachelor of Technology, CSE</p>
               <p className="text-neutral-500 text-sm">GPA: 3.6/4</p>
             </div>
           </div>
         </div>
         <div id="skills">
-          <h2 className="text-sm font-bold tracking-widest text-[#C3E41D] mb-8 uppercase">Technical Skills</h2>
+          <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">Technical Skills</h2>
           <div className="flex flex-wrap gap-2">
             {["Python", "C++", "Java", "JavaScript", "AWS", "Docker", "Kubernetes", "React", "PostgreSQL", "MongoDB", "PySpark", "Git", "Linux", "RESTful APIs"].map((skill) => (
-              <span key={skill} className="px-4 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-sm font-medium hover:bg-[#C3E41D] hover:text-black transition-colors cursor-default">
+              <span key={skill} className="px-4 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-sm font-medium hover:bg-[#F9A66E] hover:text-black transition-colors cursor-default">
                 {skill}
               </span>
             ))}
@@ -321,9 +321,9 @@ export default function App() {
 
       {/* Contact Section */}
       <section id="contact" className="px-6 py-32 text-center bg-neutral-900 text-white relative">
-        <h2 className="text-sm font-bold tracking-widest text-[#C3E41D] mb-8 uppercase">Contact</h2>
+        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">Contact</h2>
         <div className="flex flex-col items-center gap-6">
-          <a href="mailto:tindireddy@binghamton.edu" className="text-3xl md:text-5xl font-bold hover:text-[#C3E41D] transition-colors">
+          <a href="mailto:tindireddy@binghamton.edu" className="text-3xl md:text-5xl font-bold hover:text-[#F9A66E] transition-colors">
             tindireddy@binghamton.edu
           </a>
           <p className="text-xl text-neutral-400">+1-607-232-1218</p>
