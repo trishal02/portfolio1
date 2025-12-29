@@ -96,6 +96,20 @@ export default function App() {
       ],
     },
     {
+      title: "SQL Injection & XSS Cross-Site Scripting",
+      period: "Sep 2023 - Dec 2023",
+      description:
+        "Conducted an in-depth analysis of SQL Injection and Cross-Site Scripting (XSS) vulnerabilities.",
+      tech: "Linux, Virtual Machines, Machine Learning, Naive Bayes, Python",
+      points: [
+        "Designed a virtualized attack environment using Linux-based Virtual Machines to demonstrate real-world exploitation.",
+        "Developed and tested SQL Injection methods to bypass authentication and compromise web applications.",
+        "Investigated XSS attacks, identifying security flaws that allow malicious script injection.",
+        "Implemented machine learning based detection for SQL Injection, achieving 91.6% accuracy using Naive Bayes classification.",
+        "Proposed and evaluated defensive strategies including input validation, output encoding, and Content Security Policies (CSP) to mitigate web security threats.",
+      ],
+    },
+    {
       title: "Crime Analysis and Prediction System",
       period: "Oct 2022 - Mar 2023",
       description:
@@ -189,16 +203,22 @@ export default function App() {
           <button
             type="button"
             onClick={toggleTheme}
-            className="relative w-14 h-7 rounded-full transition-colors border border-neutral-700"
+            className="relative w-14 h-7 rounded-full transition-all duration-300"
             style={{
-              backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)",
+              backgroundColor: isDark
+                ? "rgba(249, 166, 110, 0.2)"
+                : "rgba(249, 166, 110, 0.3)",
+              border: `1px solid ${
+                isDark ? "rgba(249, 166, 110, 0.4)" : "rgba(249, 166, 110, 0.5)"
+              }`,
             }}
             aria-label="Toggle theme"
           >
             <div
-              className="absolute top-0.5 left-0.5 w-6 h-6 rounded-full transition-transform duration-300 bg-white shadow-sm"
+              className="absolute top-0.5 left-0.5 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm"
               style={{
                 transform: isDark ? "translateX(1.75rem)" : "translateX(0)",
+                backgroundColor: isDark ? "#F9A66E" : "#fff",
               }}
             />
           </button>
@@ -246,17 +266,29 @@ export default function App() {
             delay={50}
             animateBy="words"
             direction="bottom"
-            className="text-lg md:text-2xl font-light tracking-widest uppercase text-neutral-500"
+            className="text-lg md:text-2xl font-light tracking-widest uppercase"
+            style={{
+              color: isDark
+                ? "rgba(249, 166, 110, 0.7)"
+                : "rgba(200, 100, 50, 0.7)",
+            }}
           />
         </div>
 
         {/* Scroll Indicator */}
         <a
           href="#about"
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer p-2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer p-2 transition-colors hover:text-[#F9A66E]"
           aria-label="Scroll down"
         >
-          <ChevronDown className="w-8 h-8 text-neutral-500" />
+          <ChevronDown
+            className="w-8 h-8"
+            style={{
+              color: isDark
+                ? "rgba(249, 166, 110, 0.6)"
+                : "rgba(200, 100, 50, 0.6)",
+            }}
+          />
         </a>
       </section>
 
@@ -278,7 +310,15 @@ export default function App() {
       {/* Experience Section */}
       <section
         id="experience"
-        className="px-6 py-20 max-w-6xl mx-auto bg-neutral-50/5 dark:bg-neutral-900/20 rounded-3xl my-10"
+        className="px-6 py-20 max-w-6xl mx-auto rounded-3xl my-10"
+        style={{
+          background: isDark
+            ? "rgba(249, 166, 110, 0.05)"
+            : "rgba(249, 166, 110, 0.08)",
+          border: `1px solid ${
+            isDark ? "rgba(249, 166, 110, 0.15)" : "rgba(249, 166, 110, 0.2)"
+          }`,
+        }}
       >
         <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">
           Work Experience
@@ -288,16 +328,37 @@ export default function App() {
             <div key={index} className="grid md:grid-cols-4 gap-6">
               <div className="md:col-span-1">
                 <h3 className="text-xl font-bold">{job.company}</h3>
-                <p className="text-neutral-500 mt-1 text-sm">{job.period}</p>
+                <p
+                  className="mt-1 text-sm"
+                  style={{
+                    color: isDark
+                      ? "rgba(249, 166, 110, 0.7)"
+                      : "rgba(200, 100, 50, 0.7)",
+                  }}
+                >
+                  {job.period}
+                </p>
               </div>
               <div className="md:col-span-3">
                 <h4 className="text-2xl font-semibold mb-4 text-[#F9A66E]">
                   {job.role}
                 </h4>
-                <ul className="space-y-3 text-neutral-400">
+                <ul
+                  className="space-y-3"
+                  style={{
+                    color: isDark
+                      ? "rgba(255, 255, 255, 0.7)"
+                      : "rgba(0, 0, 0, 0.7)",
+                  }}
+                >
                   {job.points.map((point, i) => (
                     <li key={i} className="leading-relaxed flex items-start">
-                      <span className="mr-3 opacity-50 mt-1.5">•</span>
+                      <span
+                        className="mr-3 mt-1.5"
+                        style={{ color: "#F9A66E", opacity: 0.8 }}
+                      >
+                        •
+                      </span>
                       <span>{point}</span>
                     </li>
                   ))}
@@ -317,30 +378,100 @@ export default function App() {
           {projects.map((project, index) => (
             <div
               key={index}
-              className="group border border-neutral-200 dark:border-neutral-800 p-8 rounded-2xl hover:border-[#F9A66E] transition-colors duration-500"
+              className="group p-8 rounded-2xl transition-all duration-500"
+              style={{
+                border: `1px solid ${
+                  isDark
+                    ? "rgba(249, 166, 110, 0.2)"
+                    : "rgba(249, 166, 110, 0.3)"
+                }`,
+                backgroundColor: isDark
+                  ? "rgba(249, 166, 110, 0.02)"
+                  : "rgba(249, 166, 110, 0.05)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#F9A66E";
+                e.currentTarget.style.backgroundColor = isDark
+                  ? "rgba(249, 166, 110, 0.08)"
+                  : "rgba(249, 166, 110, 0.12)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = isDark
+                  ? "rgba(249, 166, 110, 0.2)"
+                  : "rgba(249, 166, 110, 0.3)";
+                e.currentTarget.style.backgroundColor = isDark
+                  ? "rgba(249, 166, 110, 0.02)"
+                  : "rgba(249, 166, 110, 0.05)";
+              }}
             >
               <div className="flex justify-between items-start mb-4">
                 <h3 className="text-2xl font-bold group-hover:text-[#F9A66E] transition-colors">
                   {project.title}
                 </h3>
-                <span className="text-xs font-mono py-1 px-2 rounded-full border border-neutral-700 text-neutral-500">
+                <span
+                  className="text-xs font-mono py-1 px-2 rounded-full border"
+                  style={{
+                    borderColor: isDark
+                      ? "rgba(249, 166, 110, 0.4)"
+                      : "rgba(249, 166, 110, 0.5)",
+                    color: isDark
+                      ? "rgba(249, 166, 110, 0.8)"
+                      : "rgba(200, 100, 50, 0.8)",
+                    backgroundColor: isDark
+                      ? "rgba(249, 166, 110, 0.1)"
+                      : "rgba(249, 166, 110, 0.15)",
+                  }}
+                >
                   {project.period}
                 </span>
               </div>
-              <p className="text-neutral-400 mb-6 min-h-[50px]">
+              <p
+                className="mb-6 min-h-[50px]"
+                style={{
+                  color: isDark
+                    ? "rgba(255, 255, 255, 0.6)"
+                    : "rgba(0, 0, 0, 0.6)",
+                }}
+              >
                 {project.description}
               </p>
               <div className="mb-6">
-                <p className="text-sm font-bold text-neutral-300 mb-2">
+                <p
+                  className="text-sm font-bold mb-2"
+                  style={{
+                    color: isDark
+                      ? "rgba(255, 255, 255, 0.8)"
+                      : "rgba(0, 0, 0, 0.8)",
+                  }}
+                >
                   Tech:{" "}
-                  <span className="text-neutral-500 font-normal">
+                  <span
+                    className="font-normal"
+                    style={{
+                      color: isDark
+                        ? "rgba(249, 166, 110, 0.8)"
+                        : "rgba(200, 100, 50, 0.8)",
+                    }}
+                  >
                     {project.tech}
                   </span>
                 </p>
               </div>
-              <ul className="space-y-2 text-sm text-neutral-500">
+              <ul
+                className="space-y-2 text-sm"
+                style={{
+                  color: isDark
+                    ? "rgba(255, 255, 255, 0.6)"
+                    : "rgba(0, 0, 0, 0.6)",
+                }}
+              >
                 {project.points.map((pt, i) => (
-                  <li key={i}>• {pt}</li>
+                  <li key={i}>
+                    <span style={{ color: "#F9A66E", marginRight: "0.5rem" }}>
+                      •
+                    </span>
+                    {pt}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -361,14 +492,32 @@ export default function App() {
             <div>
               <h3 className="text-xl font-bold">Binghamton University, SUNY</h3>
               <p className="text-[#F9A66E]">Master's, Computer Science</p>
-              <p className="text-neutral-500 text-sm">GPA: 3.53/4</p>
+              <p
+                className="text-sm"
+                style={{
+                  color: isDark
+                    ? "rgba(249, 166, 110, 0.7)"
+                    : "rgba(200, 100, 50, 0.7)",
+                }}
+              >
+                GPA: 3.53/4
+              </p>
             </div>
             <div>
               <h3 className="text-xl font-bold">
                 Indian Institute of Information & Technology, Kottayam
               </h3>
               <p className="text-[#F9A66E]">Bachelor of Technology, CSE</p>
-              <p className="text-neutral-500 text-sm">GPA: 3.6/4</p>
+              <p
+                className="text-sm"
+                style={{
+                  color: isDark
+                    ? "rgba(249, 166, 110, 0.7)"
+                    : "rgba(200, 100, 50, 0.7)",
+                }}
+              >
+                GPA: 3.6/4
+              </p>
             </div>
           </div>
         </div>
@@ -395,7 +544,38 @@ export default function App() {
             ].map((skill) => (
               <span
                 key={skill}
-                className="px-4 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-sm font-medium hover:bg-[#F9A66E] hover:text-black transition-colors cursor-default"
+                className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-default"
+                style={{
+                  backgroundColor: isDark
+                    ? "rgba(249, 166, 110, 0.15)"
+                    : "rgba(249, 166, 110, 0.2)",
+                  color: isDark
+                    ? "rgba(249, 166, 110, 0.9)"
+                    : "rgba(200, 100, 50, 0.9)",
+                  border: `1px solid ${
+                    isDark
+                      ? "rgba(249, 166, 110, 0.3)"
+                      : "rgba(249, 166, 110, 0.4)"
+                  }`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#F9A66E";
+                  e.currentTarget.style.color = isDark ? "#000" : "#fff";
+                  e.currentTarget.style.borderColor = "#F9A66E";
+                  e.currentTarget.style.transform = "scale(1.05)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = isDark
+                    ? "rgba(249, 166, 110, 0.15)"
+                    : "rgba(249, 166, 110, 0.2)";
+                  e.currentTarget.style.color = isDark
+                    ? "rgba(249, 166, 110, 0.9)"
+                    : "rgba(200, 100, 50, 0.9)";
+                  e.currentTarget.style.borderColor = isDark
+                    ? "rgba(249, 166, 110, 0.3)"
+                    : "rgba(249, 166, 110, 0.4)";
+                  e.currentTarget.style.transform = "scale(1)";
+                }}
               >
                 {skill}
               </span>
@@ -407,7 +587,12 @@ export default function App() {
       {/* Contact Section */}
       <section
         id="contact"
-        className="px-6 py-32 text-center bg-neutral-900 text-white relative"
+        className="px-6 py-32 text-center relative"
+        style={{
+          background: isDark
+            ? "linear-gradient(135deg, rgba(20, 20, 20, 1) 0%, rgba(30, 25, 20, 1) 100%)"
+            : "linear-gradient(135deg, rgba(250, 245, 240, 1) 0%, rgba(255, 250, 245, 1) 100%)",
+        }}
       >
         <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">
           Contact
@@ -416,18 +601,38 @@ export default function App() {
           <a
             href="mailto:tindireddy@binghamton.edu"
             className="text-3xl md:text-5xl font-bold hover:text-[#F9A66E] transition-colors"
+            style={{ color: isDark ? "white" : "hsl(0 0% 10%)" }}
           >
             tindireddy@binghamton.edu
           </a>
-          <p className="text-xl text-neutral-400">+1-607-232-1218</p>
+          <p
+            className="text-xl"
+            style={{
+              color: isDark ? "rgba(255, 255, 255, 0.6)" : "rgba(0, 0, 0, 0.6)",
+            }}
+          >
+            +1-607-232-1218
+          </p>
           <div className="flex gap-4 mt-8">
-            <div className="flex items-center gap-2 text-neutral-500">
+            <div
+              className="flex items-center gap-2"
+              style={{
+                color: isDark
+                  ? "rgba(255, 255, 255, 0.5)"
+                  : "rgba(0, 0, 0, 0.5)",
+              }}
+            >
               <MapPin className="w-5 h-5" />
               <span>Binghamton, NY</span>
             </div>
           </div>
         </div>
-        <div className="absolute bottom-6 left-0 right-0 text-center text-neutral-700 text-sm">
+        <div
+          className="absolute bottom-6 left-0 right-0 text-center text-sm"
+          style={{
+            color: isDark ? "rgba(255, 255, 255, 0.3)" : "rgba(0, 0, 0, 0.3)",
+          }}
+        >
           © {new Date().getFullYear()} Trishal Reddy Indireddy.
         </div>
       </section>
