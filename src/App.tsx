@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown, MapPin } from "lucide-react";
 import BlurText from "./components/BlurText";
+import AnimatedBackground from "./components/AnimatedBackground";
 
 export default function App() {
   const [isDark, setIsDark] = useState(true);
@@ -136,12 +137,15 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen transition-colors font-sans"
+      className="min-h-screen transition-colors font-sans relative overflow-hidden"
       style={{
-        backgroundColor: isDark ? "hsl(0 0% 0%)" : "hsl(0 0% 98%)",
+        backgroundColor: isDark ? "hsl(222, 47%, 11%)" : "hsl(0 0% 98%)",
         color: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
       }}
     >
+      {/* Animated Background */}
+      <AnimatedBackground isDark={isDark} />
+
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6 mix-blend-difference text-white">
         <nav className="flex items-center justify-between max-w-screen-2xl mx-auto">
@@ -150,7 +154,7 @@ export default function App() {
             <button
               ref={buttonRef}
               type="button"
-              className="p-2 transition-colors duration-300 z-[60] hover:text-[#F9A66E]"
+              className="p-2 transition-colors duration-300 z-[60] hover:text-[#6366F1]"
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -182,7 +186,7 @@ export default function App() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="block text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300 hover:text-[#F9A66E]"
+                    className="block text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300 hover:text-[#6366F1]"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
@@ -198,8 +202,8 @@ export default function App() {
             style={{
               fontFamily: "'Inter', sans-serif",
               color: isDark
-                ? "rgba(249, 166, 110, 0.9)"
-                : "rgba(200, 100, 50, 0.9)",
+                ? "rgba(99, 102, 241, 0.9)"
+                : "rgba(99, 102, 241, 0.8)",
             }}
           >
             "Code. Create. Innovate."
@@ -212,10 +216,10 @@ export default function App() {
             className="relative w-14 h-7 rounded-full transition-all duration-300"
             style={{
               backgroundColor: isDark
-                ? "rgba(249, 166, 110, 0.2)"
-                : "rgba(249, 166, 110, 0.3)",
+                ? "rgba(99, 102, 241, 0.2)"
+                : "rgba(99, 102, 241, 0.3)",
               border: `1px solid ${
-                isDark ? "rgba(249, 166, 110, 0.4)" : "rgba(249, 166, 110, 0.5)"
+                isDark ? "rgba(99, 102, 241, 0.4)" : "rgba(99, 102, 241, 0.5)"
               }`,
             }}
             aria-label="Toggle theme"
@@ -224,7 +228,7 @@ export default function App() {
               className="absolute top-0.5 left-0.5 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm"
               style={{
                 transform: isDark ? "translateX(1.75rem)" : "translateX(0)",
-                backgroundColor: isDark ? "#F9A66E" : "#fff",
+                backgroundColor: isDark ? "#6366F1" : "#fff",
               }}
             />
           </button>
@@ -245,7 +249,7 @@ export default function App() {
               animateBy="letters"
               direction="top"
               className="font-black text-[12vw] leading-[0.8] tracking-tighter uppercase justify-center whitespace-nowrap"
-              style={{ color: "#F9A66E", fontFamily: "'Inter', sans-serif" }}
+              style={{ color: "#6366F1", fontFamily: "'Inter', sans-serif" }}
             />
           </div>
           <div>
@@ -255,7 +259,7 @@ export default function App() {
               animateBy="letters"
               direction="top"
               className="font-black text-[12vw] leading-[0.8] tracking-tighter uppercase justify-center whitespace-nowrap"
-              style={{ color: "#F9A66E", fontFamily: "'Inter', sans-serif" }}
+              style={{ color: "#6366F1", fontFamily: "'Inter', sans-serif" }}
             />
           </div>
 
@@ -275,8 +279,8 @@ export default function App() {
             className="text-lg md:text-2xl font-light tracking-widest uppercase"
             style={{
               color: isDark
-                ? "rgba(249, 166, 110, 0.7)"
-                : "rgba(200, 100, 50, 0.7)",
+                ? "rgba(139, 92, 246, 0.7)"
+                : "rgba(99, 102, 241, 0.7)",
             }}
           />
         </div>
@@ -284,15 +288,15 @@ export default function App() {
         {/* Scroll Indicator */}
         <a
           href="#about"
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer p-2 transition-colors hover:text-[#F9A66E]"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer p-2 transition-colors hover:text-[#6366F1]"
           aria-label="Scroll down"
         >
           <ChevronDown
             className="w-8 h-8"
             style={{
               color: isDark
-                ? "rgba(249, 166, 110, 0.6)"
-                : "rgba(200, 100, 50, 0.6)",
+                ? "rgba(139, 92, 246, 0.6)"
+                : "rgba(99, 102, 241, 0.6)",
             }}
           />
         </a>
@@ -300,12 +304,12 @@ export default function App() {
 
       {/* About Section */}
       <section id="about" className="px-6 py-20 max-w-4xl mx-auto">
-        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">
+        <h2 className="text-sm font-bold tracking-widest text-[#6366F1] mb-8 uppercase">
           About Me
         </h2>
         <p className="text-2xl md:text-4xl font-light leading-relaxed">
           Software Developer with expertise in{" "}
-          <span className="text-[#F9A66E]">C++ and Python</span>, specializing
+          <span className="text-[#6366F1]">C++ and Python</span>, specializing
           in backend development and distributed computing. Experienced in
           designing scalable, data-driven applications. Certified in AWS Cloud,
           with a passion for leveraging technical skills to enhance backend
@@ -319,14 +323,14 @@ export default function App() {
         className="px-6 py-20 max-w-6xl mx-auto rounded-3xl my-10"
         style={{
           background: isDark
-            ? "rgba(249, 166, 110, 0.05)"
-            : "rgba(249, 166, 110, 0.08)",
+            ? "rgba(99, 102, 241, 0.05)"
+            : "rgba(99, 102, 241, 0.08)",
           border: `1px solid ${
-            isDark ? "rgba(249, 166, 110, 0.15)" : "rgba(249, 166, 110, 0.2)"
+            isDark ? "rgba(99, 102, 241, 0.15)" : "rgba(99, 102, 241, 0.2)"
           }`,
         }}
       >
-        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">
+        <h2 className="text-sm font-bold tracking-widest text-[#6366F1] mb-12 uppercase">
           Work Experience
         </h2>
         <div className="space-y-16">
@@ -346,7 +350,7 @@ export default function App() {
                 </p>
               </div>
               <div className="md:col-span-3">
-                <h4 className="text-2xl font-semibold mb-4 text-[#F9A66E]">
+                <h4 className="text-2xl font-semibold mb-4 text-[#6366F1]">
                   {job.role}
                 </h4>
                 <ul
@@ -361,7 +365,7 @@ export default function App() {
                     <li key={i} className="leading-relaxed flex items-start">
                       <span
                         className="mr-3 mt-1.5"
-                        style={{ color: "#F9A66E", opacity: 0.8 }}
+                        style={{ color: "#6366F1", opacity: 0.8 }}
                       >
                         •
                       </span>
@@ -377,7 +381,7 @@ export default function App() {
 
       {/* Projects Section */}
       <section id="projects" className="px-6 py-20 max-w-6xl mx-auto">
-        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">
+        <h2 className="text-sm font-bold tracking-widest text-[#6366F1] mb-12 uppercase">
           Projects
         </h2>
         <div className="grid md:grid-cols-2 gap-8">
@@ -387,45 +391,43 @@ export default function App() {
               className="group p-8 rounded-2xl transition-all duration-500"
               style={{
                 border: `1px solid ${
-                  isDark
-                    ? "rgba(249, 166, 110, 0.2)"
-                    : "rgba(249, 166, 110, 0.3)"
+                  isDark ? "rgba(99, 102, 241, 0.2)" : "rgba(99, 102, 241, 0.3)"
                 }`,
                 backgroundColor: isDark
-                  ? "rgba(249, 166, 110, 0.02)"
-                  : "rgba(249, 166, 110, 0.05)",
+                  ? "rgba(99, 102, 241, 0.02)"
+                  : "rgba(99, 102, 241, 0.05)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#F9A66E";
+                e.currentTarget.style.borderColor = "#6366F1";
                 e.currentTarget.style.backgroundColor = isDark
-                  ? "rgba(249, 166, 110, 0.08)"
-                  : "rgba(249, 166, 110, 0.12)";
+                  ? "rgba(99, 102, 241, 0.08)"
+                  : "rgba(99, 102, 241, 0.12)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = isDark
-                  ? "rgba(249, 166, 110, 0.2)"
-                  : "rgba(249, 166, 110, 0.3)";
+                  ? "rgba(99, 102, 241, 0.2)"
+                  : "rgba(99, 102, 241, 0.3)";
                 e.currentTarget.style.backgroundColor = isDark
-                  ? "rgba(249, 166, 110, 0.02)"
-                  : "rgba(249, 166, 110, 0.05)";
+                  ? "rgba(99, 102, 241, 0.02)"
+                  : "rgba(99, 102, 241, 0.05)";
               }}
             >
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-2xl font-bold group-hover:text-[#F9A66E] transition-colors">
+                <h3 className="text-2xl font-bold group-hover:text-[#6366F1] transition-colors">
                   {project.title}
                 </h3>
                 <span
                   className="text-xs font-mono py-1 px-2 rounded-full border"
                   style={{
                     borderColor: isDark
-                      ? "rgba(249, 166, 110, 0.4)"
-                      : "rgba(249, 166, 110, 0.5)",
+                      ? "rgba(99, 102, 241, 0.4)"
+                      : "rgba(99, 102, 241, 0.5)",
                     color: isDark
-                      ? "rgba(249, 166, 110, 0.8)"
-                      : "rgba(200, 100, 50, 0.8)",
+                      ? "rgba(139, 92, 246, 0.8)"
+                      : "rgba(99, 102, 241, 0.8)",
                     backgroundColor: isDark
-                      ? "rgba(249, 166, 110, 0.1)"
-                      : "rgba(249, 166, 110, 0.15)",
+                      ? "rgba(99, 102, 241, 0.1)"
+                      : "rgba(99, 102, 241, 0.15)",
                   }}
                 >
                   {project.period}
@@ -455,8 +457,8 @@ export default function App() {
                     className="font-normal"
                     style={{
                       color: isDark
-                        ? "rgba(249, 166, 110, 0.8)"
-                        : "rgba(200, 100, 50, 0.8)",
+                        ? "rgba(139, 92, 246, 0.8)"
+                        : "rgba(99, 102, 241, 0.8)",
                     }}
                   >
                     {project.tech}
@@ -473,7 +475,7 @@ export default function App() {
               >
                 {project.points.map((pt, i) => (
                   <li key={i}>
-                    <span style={{ color: "#F9A66E", marginRight: "0.5rem" }}>
+                    <span style={{ color: "#6366F1", marginRight: "0.5rem" }}>
                       •
                     </span>
                     {pt}
@@ -491,19 +493,19 @@ export default function App() {
         className="px-6 py-20 max-w-6xl mx-auto grid md:grid-cols-2 gap-16"
       >
         <div>
-          <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">
+          <h2 className="text-sm font-bold tracking-widest text-[#6366F1] mb-8 uppercase">
             Education
           </h2>
           <div className="space-y-8">
             <div>
               <h3 className="text-xl font-bold">Binghamton University, SUNY</h3>
-              <p className="text-[#F9A66E]">Master's, Computer Science</p>
+              <p className="text-[#6366F1]">Master's, Computer Science</p>
               <p
                 className="text-sm"
                 style={{
                   color: isDark
-                    ? "rgba(249, 166, 110, 0.7)"
-                    : "rgba(200, 100, 50, 0.7)",
+                    ? "rgba(139, 92, 246, 0.7)"
+                    : "rgba(99, 102, 241, 0.7)",
                 }}
               >
                 GPA: 3.53/4
@@ -513,13 +515,13 @@ export default function App() {
               <h3 className="text-xl font-bold">
                 Indian Institute of Information & Technology, Kottayam
               </h3>
-              <p className="text-[#F9A66E]">Bachelor of Technology, CSE</p>
+              <p className="text-[#6366F1]">Bachelor of Technology, CSE</p>
               <p
                 className="text-sm"
                 style={{
                   color: isDark
-                    ? "rgba(249, 166, 110, 0.7)"
-                    : "rgba(200, 100, 50, 0.7)",
+                    ? "rgba(139, 92, 246, 0.7)"
+                    : "rgba(99, 102, 241, 0.7)",
                 }}
               >
                 GPA: 3.6/4
@@ -528,7 +530,7 @@ export default function App() {
           </div>
         </div>
         <div id="skills">
-          <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">
+          <h2 className="text-sm font-bold tracking-widest text-[#6366F1] mb-8 uppercase">
             Technical Skills
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -553,33 +555,33 @@ export default function App() {
                 className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-default"
                 style={{
                   backgroundColor: isDark
-                    ? "rgba(249, 166, 110, 0.15)"
-                    : "rgba(249, 166, 110, 0.2)",
+                    ? "rgba(99, 102, 241, 0.15)"
+                    : "rgba(99, 102, 241, 0.2)",
                   color: isDark
-                    ? "rgba(249, 166, 110, 0.9)"
-                    : "rgba(200, 100, 50, 0.9)",
+                    ? "rgba(139, 92, 246, 0.9)"
+                    : "rgba(99, 102, 241, 0.9)",
                   border: `1px solid ${
                     isDark
-                      ? "rgba(249, 166, 110, 0.3)"
-                      : "rgba(249, 166, 110, 0.4)"
+                      ? "rgba(99, 102, 241, 0.3)"
+                      : "rgba(99, 102, 241, 0.4)"
                   }`,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#F9A66E";
-                  e.currentTarget.style.color = isDark ? "#000" : "#fff";
-                  e.currentTarget.style.borderColor = "#F9A66E";
+                  e.currentTarget.style.backgroundColor = "#6366F1";
+                  e.currentTarget.style.color = "#fff";
+                  e.currentTarget.style.borderColor = "#6366F1";
                   e.currentTarget.style.transform = "scale(1.05)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor = isDark
-                    ? "rgba(249, 166, 110, 0.15)"
-                    : "rgba(249, 166, 110, 0.2)";
+                    ? "rgba(99, 102, 241, 0.15)"
+                    : "rgba(99, 102, 241, 0.2)";
                   e.currentTarget.style.color = isDark
-                    ? "rgba(249, 166, 110, 0.9)"
-                    : "rgba(200, 100, 50, 0.9)";
+                    ? "rgba(139, 92, 246, 0.9)"
+                    : "rgba(99, 102, 241, 0.9)";
                   e.currentTarget.style.borderColor = isDark
-                    ? "rgba(249, 166, 110, 0.3)"
-                    : "rgba(249, 166, 110, 0.4)";
+                    ? "rgba(99, 102, 241, 0.3)"
+                    : "rgba(99, 102, 241, 0.4)";
                   e.currentTarget.style.transform = "scale(1)";
                 }}
               >
@@ -592,7 +594,7 @@ export default function App() {
 
       {/* Extracurriculars Section */}
       <section id="extracurriculars" className="px-6 py-20 max-w-6xl mx-auto">
-        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">
+        <h2 className="text-sm font-bold tracking-widest text-[#6366F1] mb-12 uppercase">
           Extracurriculars
         </h2>
         <div className="space-y-12">
@@ -601,7 +603,7 @@ export default function App() {
               <h3 className="text-xl font-bold">
                 Indian Institute of Information & Technology
               </h3>
-              <p className="text-[#F9A66E] mt-1">Captain</p>
+              <p className="text-[#6366F1] mt-1">Captain</p>
             </div>
             <div className="md:col-span-3">
               <ul
@@ -615,7 +617,7 @@ export default function App() {
                 <li className="leading-relaxed flex items-start">
                   <span
                     className="mr-3 mt-1.5"
-                    style={{ color: "#F9A66E", opacity: 0.8 }}
+                    style={{ color: "#6366F1", opacity: 0.8 }}
                   >
                     •
                   </span>
@@ -644,7 +646,7 @@ export default function App() {
                 <li className="leading-relaxed flex items-start">
                   <span
                     className="mr-3 mt-1.5"
-                    style={{ color: "#F9A66E", opacity: 0.8 }}
+                    style={{ color: "#6366F1", opacity: 0.8 }}
                   >
                     •
                   </span>
@@ -660,7 +662,7 @@ export default function App() {
           <div className="grid md:grid-cols-4 gap-6">
             <div className="md:col-span-1">
               <h3 className="text-xl font-bold">Sodexo</h3>
-              <p className="text-[#F9A66E] mt-1">Student Manager</p>
+              <p className="text-[#6366F1] mt-1">Student Manager</p>
             </div>
             <div className="md:col-span-3">
               <ul
@@ -674,7 +676,7 @@ export default function App() {
                 <li className="leading-relaxed flex items-start">
                   <span
                     className="mr-3 mt-1.5"
-                    style={{ color: "#F9A66E", opacity: 0.8 }}
+                    style={{ color: "#6366F1", opacity: 0.8 }}
                   >
                     •
                   </span>
@@ -695,17 +697,17 @@ export default function App() {
         className="px-6 py-32 text-center relative"
         style={{
           background: isDark
-            ? "linear-gradient(135deg, rgba(20, 20, 20, 1) 0%, rgba(30, 25, 20, 1) 100%)"
-            : "linear-gradient(135deg, rgba(250, 245, 240, 1) 0%, rgba(255, 250, 245, 1) 100%)",
+            ? "linear-gradient(135deg, rgba(15, 23, 42, 1) 0%, rgba(30, 27, 75, 1) 100%)"
+            : "linear-gradient(135deg, rgba(238, 242, 255, 1) 0%, rgba(245, 243, 255, 1) 100%)",
         }}
       >
-        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-8 uppercase">
+        <h2 className="text-sm font-bold tracking-widest text-[#6366F1] mb-8 uppercase">
           Contact
         </h2>
         <div className="flex flex-col items-center gap-6">
           <a
             href="mailto:tindireddy@binghamton.edu"
-            className="text-3xl md:text-5xl font-bold hover:text-[#F9A66E] transition-colors"
+            className="text-3xl md:text-5xl font-bold hover:text-[#6366F1] transition-colors"
             style={{ color: isDark ? "white" : "hsl(0 0% 10%)" }}
           >
             tindireddy@binghamton.edu
