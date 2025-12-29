@@ -3,29 +3,32 @@
 @theme {
   --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(0 0% 3.9%);
-  --color-coral: #F9A66E;
-  --color-coral-dark: #E8955A;
-  --color-coral-light: #FBB88E;
-  --color-coral-pale: #FDC5A8;
+  --color-indigo: #6366F1;
+  --color-purple: #8B5CF6;
+  --color-pink: #EC4899;
+  --color-indigo-light: #818CF8;
+  --color-indigo-dark: #4F46E5;
 }
 
 @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
-    --coral-primary: #F9A66E;
-    --coral-dark: #E8955A;
-    --coral-light: #FBB88E;
-    --coral-pale: #FDC5A8;
+    --indigo-primary: #6366F1;
+    --purple-secondary: #8B5CF6;
+    --pink-accent: #EC4899;
+    --indigo-light: #818CF8;
+    --indigo-dark: #4F46E5;
   }
 
   .dark {
-    --background: 0 0% 0%;
+    --background: 222 47% 11%;
     --foreground: 0 0% 98%;
-    --coral-primary: #F9A66E;
-    --coral-dark: #E8955A;
-    --coral-light: #FBB88E;
-    --coral-pale: #FDC5A8;
+    --indigo-primary: #6366F1;
+    --purple-secondary: #8B5CF6;
+    --pink-accent: #EC4899;
+    --indigo-light: #818CF8;
+    --indigo-dark: #4F46E5;
   }
 }
 
