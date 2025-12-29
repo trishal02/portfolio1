@@ -46,6 +46,7 @@ export default function App() {
     { label: "PROJECTS", href: "#projects" },
     { label: "EDUCATION", href: "#education" },
     { label: "SKILLS", href: "#skills" },
+    { label: "EXTRACURRICULARS", href: "#extracurriculars" },
     { label: "CONTACT", href: "#contact" },
   ];
 
@@ -191,12 +192,17 @@ export default function App() {
             )}
           </div>
 
-          {/* Signature */}
+          {/* Quote */}
           <div
-            className="text-3xl font-bold tracking-tighter"
-            style={{ fontFamily: "'Fira Code', monospace" }}
+            className="text-sm md:text-base font-medium tracking-wide italic text-center max-w-xs"
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              color: isDark
+                ? "rgba(249, 166, 110, 0.9)"
+                : "rgba(200, 100, 50, 0.9)",
+            }}
           >
-            TRI
+            "Code. Create. Innovate."
           </div>
 
           {/* Theme Toggle */}
@@ -580,6 +586,105 @@ export default function App() {
                 {skill}
               </span>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Extracurriculars Section */}
+      <section id="extracurriculars" className="px-6 py-20 max-w-6xl mx-auto">
+        <h2 className="text-sm font-bold tracking-widest text-[#F9A66E] mb-12 uppercase">
+          Extracurriculars
+        </h2>
+        <div className="space-y-12">
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="md:col-span-1">
+              <h3 className="text-xl font-bold">
+                Indian Institute of Information & Technology
+              </h3>
+              <p className="text-[#F9A66E] mt-1">Captain</p>
+            </div>
+            <div className="md:col-span-3">
+              <ul
+                className="space-y-3"
+                style={{
+                  color: isDark
+                    ? "rgba(255, 255, 255, 0.7)"
+                    : "rgba(0, 0, 0, 0.7)",
+                }}
+              >
+                <li className="leading-relaxed flex items-start">
+                  <span
+                    className="mr-3 mt-1.5"
+                    style={{ color: "#F9A66E", opacity: 0.8 }}
+                  >
+                    •
+                  </span>
+                  <span>
+                    Captain of our college Cricket & Badminton team,
+                    representing at National-level Inter IIIT Sports Meet.
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="md:col-span-1">
+              <h3 className="text-xl font-bold">National Level Wrestler</h3>
+            </div>
+            <div className="md:col-span-3">
+              <ul
+                className="space-y-3"
+                style={{
+                  color: isDark
+                    ? "rgba(255, 255, 255, 0.7)"
+                    : "rgba(0, 0, 0, 0.7)",
+                }}
+              >
+                <li className="leading-relaxed flex items-start">
+                  <span
+                    className="mr-3 mt-1.5"
+                    style={{ color: "#F9A66E", opacity: 0.8 }}
+                  >
+                    •
+                  </span>
+                  <span>
+                    During my high school time, I represented my state in a
+                    national-level wrestling competition.
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="md:col-span-1">
+              <h3 className="text-xl font-bold">Sodexo</h3>
+              <p className="text-[#F9A66E] mt-1">Student Manager</p>
+            </div>
+            <div className="md:col-span-3">
+              <ul
+                className="space-y-3"
+                style={{
+                  color: isDark
+                    ? "rgba(255, 255, 255, 0.7)"
+                    : "rgba(0, 0, 0, 0.7)",
+                }}
+              >
+                <li className="leading-relaxed flex items-start">
+                  <span
+                    className="mr-3 mt-1.5"
+                    style={{ color: "#F9A66E", opacity: 0.8 }}
+                  >
+                    •
+                  </span>
+                  <span>
+                    During my master's, I worked as a student manager in the
+                    place I worked, where I managed more than 20 students.
+                  </span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
