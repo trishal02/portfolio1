@@ -1,40 +1,204 @@
 @import "tailwindcss";
 
+/* F1-Inspired Design System */
 @theme {
+  /* Racing Colors - Tailwind v4 format */
+  --color-racing-red: #DC2626;
+  --color-racing-red-light: #EF4444;
+  --color-racing-red-dark: #B91C1C;
+  --color-asphalt: #0A0A0A;
+  --color-asphalt-light: #1A1A1A;
+  --color-asphalt-lighter: #2A2A2A;
+  --color-metallic-gray: #6B7280;
+  --color-metallic-gray-light: #9CA3AF;
+  --color-white: #FFFFFF;
+  --color-yellow: #FBBF24;
+  --color-green: #10B981;
+  
+  /* Legacy support */
   --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(0 0% 3.9%);
-  --color-indigo: #6366F1;
-  --color-purple: #8B5CF6;
-  --color-pink: #EC4899;
-  --color-indigo-light: #818CF8;
-  --color-indigo-dark: #4F46E5;
 }
 
 @layer base {
   :root {
+    /* F1 Theme Variables */
+    --racing-red: #DC2626;
+    --racing-red-light: #EF4444;
+    --racing-red-dark: #B91C1C;
+    --asphalt: #0A0A0A;
+    --asphalt-light: #1A1A1A;
+    --asphalt-lighter: #2A2A2A;
+    --metallic-gray: #6B7280;
+    --metallic-gray-light: #9CA3AF;
+    --white: #FFFFFF;
+    --yellow: #FBBF24;
+    --green: #10B981;
+    
+    /* Typography */
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+    
+    /* Legacy */
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
-    --indigo-primary: #6366F1;
-    --purple-secondary: #8B5CF6;
-    --pink-accent: #EC4899;
-    --indigo-light: #818CF8;
-    --indigo-dark: #4F46E5;
   }
 
   .dark {
-    --background: 222 47% 11%;
+    --background: 10 10% 4%;
     --foreground: 0 0% 98%;
-    --indigo-primary: #6366F1;
-    --purple-secondary: #8B5CF6;
-    --pink-accent: #EC4899;
-    --indigo-light: #818CF8;
-    --indigo-dark: #4F46E5;
   }
 }
 
-/* Fallback for body text color if not using theme variables directly in classes */
+/* Base Styles */
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', sans-serif;
+  background-color: var(--asphalt);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Carbon Fiber Pattern */
+.carbon-fiber {
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(255, 255, 255, 0.03) 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(255, 255, 255, 0.03) 3px
+    );
+  background-size: 4px 4px;
+  background-color: var(--asphalt);
+}
+
+/* Track Lines Pattern */
+.track-lines {
+  position: relative;
+  overflow: hidden;
+}
+
+.track-lines::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 48px,
+      rgba(220, 38, 38, 0.1) 48px,
+      rgba(220, 38, 38, 0.1) 50px,
+      transparent 50px,
+      transparent 98px,
+      rgba(220, 38, 38, 0.1) 98px,
+      rgba(220, 38, 38, 0.1) 100px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Telemetry Grid Overlay */
+.telemetry-grid {
+  background-image: 
+    linear-gradient(rgba(220, 38, 38, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(220, 38, 38, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Speed Streaks Animation */
+@keyframes speedStreaks {
+  0% {
+    transform: translateX(-100%) translateY(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100vw) translateY(-50px);
+    opacity: 0;
+  }
+}
+
+.speed-streak {
+  position: absolute;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--racing-red),
+    transparent
+  );
+  animation: speedStreaks 3s linear infinite;
+  opacity: 0.3;
+}
+
+/* Pit Wall Style Border */
+.pit-wall-border {
+  border: 2px solid var(--racing-red);
+  box-shadow: 
+    0 0 10px rgba(220, 38, 38, 0.3),
+    inset 0 0 10px rgba(220, 38, 38, 0.1);
+}
+
+/* Glow Effects */
+.glow-red {
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+}
+
+.glow-red-strong {
+  box-shadow: 0 0 30px rgba(220, 38, 38, 0.8);
+}
+
+/* Typography Utilities */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--asphalt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--racing-red);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--racing-red-light);
+}
+
+/* Focus States for Accessibility */
+*:focus-visible {
+  outline: 2px solid var(--racing-red);
+  outline-offset: 2px;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
 }
