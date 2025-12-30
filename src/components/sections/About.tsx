@@ -1,5 +1,5 @@
 import Section from "../layout/Section";
-import PortraitReveal from "../about/PortraitReveal";
+import PortraitFluidReveal from "../about/PortraitFluidReveal";
 
 interface AboutProps {
   content: string;
@@ -59,9 +59,9 @@ export default function About({ content }: AboutProps) {
         }}
       >
         <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
-          {/* Photo with hover reveal */}
+          {/* Photo with fluid hover reveal */}
           <div className="flex-shrink-0 w-full md:w-80 lg:w-96">
-            <PortraitReveal />
+            <PortraitFluidReveal />
           </div>
 
           {/* Text Content */}
