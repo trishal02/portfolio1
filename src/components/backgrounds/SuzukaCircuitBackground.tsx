@@ -222,8 +222,8 @@ export default function SuzukaCircuitBackground() {
         {/* Race Cars - 20 cars spaced along the track */}
         <g>
           {Array.from({ length: 20 }, (_, i) => {
-            // Space cars evenly along the track (each car delayed by 1.75s from the previous)
-            const delay = i * 1.75;
+            // Space cars evenly along the track (each car delayed by 0.5s from the previous)
+            const delay = i * 0.5;
             // Vary colors slightly for visual interest (blue/cyan spectrum)
             const hue = 200 + (i % 5) * 10; // 200-240 range
             const tailColor = `hsla(${hue}, 70%, 60%, 0.25)`;
