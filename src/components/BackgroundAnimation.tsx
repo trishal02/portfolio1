@@ -25,12 +25,12 @@ export default function BackgroundAnimation() {
       }}
       aria-hidden="true"
     >
-      {/* Base dark background - semi-transparent to show aurora */}
+      {/* Base dark background - more transparent to show aurora */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(10, 10, 10, 0.7) 0%, rgba(0, 0, 0, 0.9) 100%)",
+            "radial-gradient(ellipse at center, rgba(10, 10, 10, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%)",
         }}
       />
 

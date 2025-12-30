@@ -51,8 +51,9 @@
 }
 
 /* Base Styles */
+html,
 body {
-  background-color: var(--asphalt);
+  background: transparent;
   color: var(--white);
   font-family: var(--font-body);
   font-weight: 400;

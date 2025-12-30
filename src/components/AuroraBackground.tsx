@@ -68,7 +68,14 @@ export default function AuroraBackground() {
       className="fixed inset-0 -z-10 overflow-hidden bg-slate-950 pointer-events-none"
       aria-hidden="true"
     >
-      {/* Aurora Blob 1 - Indigo */}
+      {/* TEMPORARY DEBUG MARKER - Remove after visibility confirmed */}
+      <div
+        className="fixed top-4 right-4 z-[9999] w-3 h-3 bg-red-500 rounded-full animate-pulse"
+        style={{ display: "none" }}
+        aria-label="Aurora mounted debug marker"
+      />
+
+      {/* Aurora Blob 1 - Indigo - Temporarily increased opacity for visibility */}
       <motion.div
         className="absolute"
         style={{
@@ -76,17 +83,17 @@ export default function AuroraBackground() {
           height: "800px",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, rgba(79, 70, 229, 0.3) 50%, transparent 70%)",
-          filter: "blur(100px)",
+            "radial-gradient(circle, rgba(99, 102, 241, 0.6) 0%, rgba(79, 70, 229, 0.5) 50%, transparent 70%)",
+          filter: "blur(80px)",
           top: "10%",
           left: "10%",
-          opacity: 0.35,
+          opacity: 0.7, // Temporarily increased from 0.35
         }}
         variants={blobVariants}
         animate={shouldReduceMotion ? {} : "animate"}
       />
 
-      {/* Aurora Blob 2 - Purple */}
+      {/* Aurora Blob 2 - Purple - Temporarily increased opacity for visibility */}
       <motion.div
         className="absolute"
         style={{
@@ -94,17 +101,17 @@ export default function AuroraBackground() {
           height: "750px",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, rgba(124, 58, 237, 0.3) 50%, transparent 70%)",
-          filter: "blur(100px)",
+            "radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, rgba(124, 58, 237, 0.5) 50%, transparent 70%)",
+          filter: "blur(80px)",
           top: "60%",
           right: "15%",
-          opacity: 0.3,
+          opacity: 0.65, // Temporarily increased from 0.3
         }}
         variants={blobVariants2}
         animate={shouldReduceMotion ? {} : "animate"}
       />
 
-      {/* Aurora Blob 3 - Slate/Indigo */}
+      {/* Aurora Blob 3 - Slate/Indigo - Temporarily increased opacity for visibility */}
       <motion.div
         className="absolute"
         style={{
@@ -112,17 +119,17 @@ export default function AuroraBackground() {
           height: "700px",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(67, 56, 202, 0.35) 0%, rgba(100, 116, 139, 0.25) 50%, transparent 70%)",
-          filter: "blur(100px)",
+            "radial-gradient(circle, rgba(67, 56, 202, 0.55) 0%, rgba(100, 116, 139, 0.45) 50%, transparent 70%)",
+          filter: "blur(80px)",
           bottom: "20%",
           left: "50%",
-          opacity: 0.25,
+          opacity: 0.6, // Temporarily increased from 0.25
         }}
         variants={blobVariants3}
         animate={shouldReduceMotion ? {} : "animate"}
       />
 
-      {/* Aurora Blob 4 - Indigo/Purple mix */}
+      {/* Aurora Blob 4 - Indigo/Purple mix - Temporarily increased opacity for visibility */}
       <motion.div
         className="absolute"
         style={{
@@ -130,11 +137,11 @@ export default function AuroraBackground() {
           height: "850px",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.25) 50%, transparent 70%)",
-          filter: "blur(100px)",
+            "radial-gradient(circle, rgba(99, 102, 241, 0.5) 0%, rgba(139, 92, 246, 0.45) 50%, transparent 70%)",
+          filter: "blur(80px)",
           top: "40%",
           left: "60%",
-          opacity: 0.28,
+          opacity: 0.65, // Temporarily increased from 0.28
         }}
         variants={blobVariants4}
         animate={shouldReduceMotion ? {} : "animate"}
@@ -167,4 +174,3 @@ export default function AuroraBackground() {
     </div>
   );
 }
-

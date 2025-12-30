@@ -33,8 +33,8 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen relative overflow-x-hidden"
-      style={{ backgroundColor: "var(--asphalt)", color: "var(--white)" }}
+      className="min-h-screen relative overflow-x-hidden bg-transparent"
+      style={{ color: "var(--white)" }}
     >
       {/* Aurora Background */}
       <AuroraBackground />
