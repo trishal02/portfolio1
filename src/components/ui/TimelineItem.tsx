@@ -36,7 +36,7 @@ export default function TimelineItem({
       {/* Content */}
       <div 
         className="carbon-fiber border rounded-lg p-6 hover:glow-red transition-all duration-300"
-        style={{ borderColor: "rgba(220, 38, 38, 0.2)" }}
+        style={{ borderColor: "rgba(220, 38, 38, 0.2)", backgroundColor: "rgba(10, 10, 10, 0.6)" }}
       >
         <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4 gap-2">
           <div>

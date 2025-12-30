@@ -4,6 +4,7 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import F1Background from "./components/background/F1Background";
 import BackgroundAnimation from "./components/BackgroundAnimation";
+import AuroraBackground from "./components/AuroraBackground";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
 import ExperienceTimeline from "./components/sections/ExperienceTimeline";
@@ -35,6 +36,9 @@ export default function App() {
       className="min-h-screen relative overflow-x-hidden"
       style={{ backgroundColor: "var(--asphalt)", color: "var(--white)" }}
     >
+      {/* Aurora Background */}
+      <AuroraBackground />
+
       {/* Aurora Background Animation */}
       <BackgroundAnimation />
 

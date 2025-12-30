@@ -20,6 +20,7 @@ export default function Card({
       } ${className}`}
       style={{
         borderColor: "rgba(220, 38, 38, 0.3)",
+        backgroundColor: "rgba(10, 10, 10, 0.6)", // Semi-transparent to show aurora
         backgroundImage: `
           linear-gradient(135deg, rgba(220, 38, 38, 0.02) 0%, transparent 50%),
           repeating-linear-gradient(

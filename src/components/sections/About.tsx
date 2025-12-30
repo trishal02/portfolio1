@@ -10,7 +10,7 @@ export default function About({ content }: AboutProps) {
     <Section id="about" title="About Me" className="max-w-4xl mx-auto">
       <div 
         className="carbon-fiber border rounded-lg p-8 hover:glow-red transition-all duration-300"
-        style={{ borderColor: "rgba(220, 38, 38, 0.2)" }}
+        style={{ borderColor: "rgba(220, 38, 38, 0.2)", backgroundColor: "rgba(10, 10, 10, 0.6)" }}
       >
         <p className="text-xl md:text-3xl font-body font-light leading-relaxed" style={{ color: "#FFFFFF" }}>
           {content.split("C++ and Python").map((part, i) => (

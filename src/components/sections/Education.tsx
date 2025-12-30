@@ -15,7 +15,7 @@ export default function EducationSection({ education }: EducationProps) {
           <FlipCard
             key={index}
             front={
-              <div className="carbon-fiber border rounded-lg p-6 h-full min-h-[300px] flex flex-col" style={{ borderColor: "rgba(220, 38, 38, 0.3)" }}>
+              <div className="carbon-fiber border rounded-lg p-6 h-full min-h-[300px] flex flex-col" style={{ borderColor: "rgba(220, 38, 38, 0.3)", backgroundColor: "rgba(10, 10, 10, 0.6)" }}>
                 <div className="flex items-start justify-between mb-4 flex-wrap gap-2">
                   <h3 className="text-xl font-display font-bold" style={{ color: "#FFFFFF" }}>
                     {edu.institution}
@@ -33,7 +33,7 @@ export default function EducationSection({ education }: EducationProps) {
               </div>
             }
             back={
-              <div className="carbon-fiber border rounded-lg p-6 h-full min-h-[300px] flex flex-col" style={{ borderColor: "rgba(220, 38, 38, 0.3)" }}>
+              <div className="carbon-fiber border rounded-lg p-6 h-full min-h-[300px] flex flex-col" style={{ borderColor: "rgba(220, 38, 38, 0.3)", backgroundColor: "rgba(10, 10, 10, 0.6)" }}>
                 <div className="flex items-start justify-between mb-4 flex-wrap gap-2">
                   <h3 className="text-xl font-display font-bold" style={{ color: "#FFFFFF" }}>
                     {edu.institution}
