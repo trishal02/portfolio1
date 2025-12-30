@@ -7,11 +7,7 @@ interface HeroProps {
   tagline: string;
 }
 
-export default function Hero({
-  firstName,
-  lastName,
-  tagline,
-}: HeroProps) {
+export default function Hero({ firstName, lastName, tagline }: HeroProps) {
   return (
     <section
       id="home"
@@ -56,19 +52,19 @@ export default function Hero({
           {/* Download Resume Button - Primary */}
           <a
             href="/resume.pdf"
-            download="Trishal_Reddy_Indireddy_Resume.pdf"
+            download
             className="px-8 py-4 font-display font-semibold uppercase tracking-wider transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 hover:opacity-90 hover:scale-105 flex items-center gap-2 shadow-lg"
             style={{
               backgroundColor: "#DC2626",
               color: "#FFFFFF",
             }}
-            aria-label="Download Trishal Reddy Indireddy Resume PDF"
+            aria-label="Download Resume PDF"
           >
             <Download className="w-5 h-5" />
             Download Resume
           </a>
 
-          {/* Connect Button - Secondary */}
+          {/* Connect Button - Secondary - Smooth scroll to Contact */}
           <a
             href="#contact"
             className="px-8 py-4 font-display font-semibold uppercase tracking-wider transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 hover:opacity-90 hover:scale-105 flex items-center gap-2"
@@ -91,7 +87,10 @@ export default function Hero({
         className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer p-2 transition-colors hover:text-racing-red focus:outline-none focus:ring-2 focus:ring-racing-red rounded"
         aria-label="Scroll down to About section"
       >
-        <ChevronDown className="w-8 h-8" style={{ color: "rgba(220, 38, 38, 0.6)" }} />
+        <ChevronDown
+          className="w-8 h-8"
+          style={{ color: "rgba(220, 38, 38, 0.6)" }}
+        />
       </a>
     </section>
   );

@@ -13,6 +13,7 @@ export interface Project {
   points: string[];
   github?: string;
   demo?: string;
+  paper?: string;
   impact?: string;
 }
 
