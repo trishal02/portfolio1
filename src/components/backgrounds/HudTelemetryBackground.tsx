@@ -19,13 +19,6 @@ export default function HudTelemetryBackground() {
       style={{ zIndex: -9 }}
       aria-hidden="true"
     >
-      {/* TEMP DEBUG MARKER - Remove after visibility confirmed */}
-      <div
-        className="fixed top-2 left-2 z-[9999] text-red-500 font-mono text-sm font-bold opacity-100"
-        style={{ zIndex: 9999 }}
-      >
-        HUD ON
-      </div>
 
       {/* A) Telemetry Grid Layer - CSS Background - TEMP HIGH OPACITY */}
       <div

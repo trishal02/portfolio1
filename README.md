@@ -1,77 +1,145 @@
-# React + TypeScript + Vite
+# Trishal Reddy Indireddy - Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, interactive portfolio website showcasing software development projects, experience, and skills. Built with React, TypeScript, and Vite, featuring an F1-inspired design theme with dynamic animations and backgrounds.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Modern Tech Stack**: Built with React 19, TypeScript, and Vite for optimal performance
+- **F1-Inspired Design**: Racing-themed UI with dynamic backgrounds and animations
+- **Interactive Sections**:
+  - Hero section with animated text effects
+  - About section with portrait reveal animations
+  - Education timeline
+  - Experience timeline
+  - Projects grid with detailed descriptions
+  - Startups showcase
+  - Skills display
+  - Extracurriculars
+  - Contact information
+- **Responsive Design**: Fully responsive layout that works on all devices
+- **Smooth Animations**: Powered by Framer Motion for fluid transitions
+- **WebGL Effects**: Advanced shader-based animations for portrait reveals
+- **Performance Optimized**: Fast loading times and smooth scrolling
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Core
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
 
-## Expanding the ESLint configuration
+### Styling & UI
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Animation library
+- **Lucide React** - Icon library
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Features
+- **WebGL** - Advanced graphics for portrait reveals
+- **Custom Shaders** - GLSL shaders for visual effects
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📦 Installation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd "Trishal portfolio"
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Install dependencies:
+```bash
+npm install
 ```
-# portfolio
-# portfolio1
-# portfolio1
-# portfolio1
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+## 🏗️ Build
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+The build output will be in the `dist` directory.
+
+To preview the production build:
+
+```bash
+npm run preview
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── about/           # About section components
+│   ├── background/      # Background animation components
+│   ├── backgrounds/    # Various background effects
+│   ├── layout/         # Layout components (Navbar, Footer)
+│   ├── sections/       # Main page sections
+│   └── ui/             # Reusable UI components
+├── data/               # Data files (profile, skills)
+├── hooks/              # Custom React hooks
+├── App.tsx             # Main app component
+├── main.tsx            # Entry point
+└── index.css           # Global styles
+```
+
+## 🎨 Customization
+
+### Updating Profile Information
+
+Edit `src/data/profile.ts` to update:
+- Personal information (name, tagline, about)
+- Contact details
+- Experience entries
+- Education history
+- Projects
+- Startups
+- Skills
+- Extracurriculars
+
+### Styling
+
+The project uses Tailwind CSS. Custom styles can be added in:
+- `src/index.css` - Global styles
+- Component-level Tailwind classes
+- Custom CSS variables for theming
+
+## 🚦 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## 📝 License
+
+This project is private and proprietary.
+
+## 👤 Author
+
+**Trishal Reddy Indireddy**
+- Email: tindireddy@binghamton.edu
+- LinkedIn: [thrishalreddy-i-4089a8207](https://www.linkedin.com/in/thrishalreddy-i-4089a8207/)
+- GitHub: [trishal02](https://github.com/trishal02)
+
+## 🌐 Deployment
+
+The portfolio can be deployed to any static hosting service:
+- **Vercel** (recommended)
+- **Netlify**
+- **GitHub Pages**
+- **AWS S3 + CloudFront**
+
+Simply run `npm run build` and deploy the `dist` folder.
+
+---
+
+Built with ❤️ using React, TypeScript, and Vite

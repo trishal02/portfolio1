@@ -68,12 +68,6 @@ export default function AuroraBackground() {
       className="fixed inset-0 -z-10 overflow-hidden bg-slate-950 pointer-events-none"
       aria-hidden="true"
     >
-      {/* TEMPORARY DEBUG MARKER - Remove after visibility confirmed */}
-      <div
-        className="fixed top-4 right-4 z-[9999] w-3 h-3 bg-red-500 rounded-full animate-pulse"
-        style={{ display: "none" }}
-        aria-label="Aurora mounted debug marker"
-      />
 
       {/* Aurora Blob 1 - Indigo - Temporarily increased opacity for visibility */}
       <motion.div

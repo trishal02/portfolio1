@@ -27,14 +27,6 @@ export default function SuzukaCircuitBackground() {
       className="fixed inset-0 -z-10 overflow-hidden bg-slate-950 pointer-events-none"
       aria-hidden="true"
     >
-      {/* TEMP DEBUG MARKER - Remove after visibility confirmed */}
-      <div
-        className="fixed top-2 left-2 z-[9999] text-green-500 font-mono text-xs font-bold opacity-100"
-        style={{ zIndex: 9999 }}
-      >
-        BG DEBUG VISIBLE
-      </div>
-
       <svg
         className="absolute inset-0 w-full h-full"
         viewBox="0 0 2000 1000"
