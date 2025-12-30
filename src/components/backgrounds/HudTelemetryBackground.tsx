@@ -15,12 +15,21 @@ export default function HudTelemetryBackground() {
 
   return (
     <div
-      className="fixed inset-0 -z-10 overflow-hidden bg-slate-950 pointer-events-none"
+      className="fixed inset-0 overflow-hidden bg-slate-950 pointer-events-none"
+      style={{ zIndex: -9 }}
       aria-hidden="true"
     >
-      {/* A) Telemetry Grid Layer - CSS Background */}
+      {/* TEMP DEBUG MARKER - Remove after visibility confirmed */}
       <div
-        className="absolute inset-0 opacity-[0.08]"
+        className="fixed top-2 left-2 z-[9999] text-red-500 font-mono text-sm font-bold opacity-100"
+        style={{ zIndex: 9999 }}
+      >
+        HUD ON
+      </div>
+
+      {/* A) Telemetry Grid Layer - CSS Background - TEMP HIGH OPACITY */}
+      <div
+        className="absolute inset-0 opacity-[0.8]"
         style={{
           backgroundImage: `
             linear-gradient(rgba(59, 130, 246, 0.06) 1px, transparent 1px),
@@ -78,13 +87,13 @@ export default function HudTelemetryBackground() {
         <motion.path
           d={tracePath1}
           fill="none"
-          stroke="rgba(34, 197, 94, 0.25)"
-          strokeWidth="2"
+          stroke="rgba(34, 197, 94, 0.8)"
+          strokeWidth="3"
           strokeLinecap="round"
           strokeDasharray="20 20"
           filter="url(#chromaticGlow1)"
           style={{
-            filter: "blur(0.5px) drop-shadow(0 0 4px rgba(34, 197, 94, 0.3))",
+            filter: "blur(0.5px) drop-shadow(0 0 8px rgba(34, 197, 94, 0.8))",
           }}
           animate={
             shouldReduceMotion
@@ -274,11 +283,11 @@ export default function HudTelemetryBackground() {
         </g>
       </svg>
 
-      {/* D) Micro HUD Text Blocks */}
+      {/* D) Micro HUD Text Blocks - TEMP HIGH OPACITY */}
       {/* Top-left HUD */}
       <div
-        className="absolute top-6 left-6 font-mono text-xs space-y-1 opacity-[0.15]"
-        style={{ color: "rgba(59, 130, 246, 0.8)" }}
+        className="absolute top-6 left-6 font-mono text-xs space-y-1 opacity-[0.8]"
+        style={{ color: "rgba(59, 130, 246, 1)" }}
       >
         <div>GEAR 7</div>
         <div>SPEED 312</div>
@@ -287,8 +296,8 @@ export default function HudTelemetryBackground() {
 
       {/* Top-right HUD */}
       <div
-        className="absolute top-6 right-6 font-mono text-xs space-y-1 opacity-[0.15] text-right"
-        style={{ color: "rgba(34, 197, 94, 0.8)" }}
+        className="absolute top-6 right-6 font-mono text-xs space-y-1 opacity-[0.8] text-right"
+        style={{ color: "rgba(34, 197, 94, 1)" }}
       >
         <div>DRS: ON</div>
         <div>ERS: 72%</div>
@@ -297,20 +306,20 @@ export default function HudTelemetryBackground() {
 
       {/* Bottom-left HUD */}
       <div
-        className="absolute bottom-6 left-6 font-mono text-xs space-y-1 opacity-[0.15]"
-        style={{ color: "rgba(239, 68, 68, 0.8)" }}
+        className="absolute bottom-6 left-6 font-mono text-xs space-y-1 opacity-[0.8]"
+        style={{ color: "rgba(239, 68, 68, 1)" }}
       >
         <div>TYRE: SOFT</div>
         <div>TEMP: 92°C</div>
       </div>
 
-      {/* E) Scanning Line (top to bottom) */}
+      {/* E) Scanning Line (top to bottom) - TEMP HIGH OPACITY */}
       <motion.div
-        className="absolute left-0 right-0 w-full h-px"
+        className="absolute left-0 right-0 w-full h-1"
         style={{
           background:
-            "linear-gradient(to right, transparent, rgba(59, 130, 246, 0.2), transparent)",
-          boxShadow: "0 0 8px rgba(59, 130, 246, 0.3)",
+            "linear-gradient(to right, transparent, rgba(59, 130, 246, 0.8), transparent)",
+          boxShadow: "0 0 16px rgba(59, 130, 246, 0.9)",
         }}
         animate={
           shouldReduceMotion
