@@ -73,8 +73,10 @@ export default function PortraitFluidReveal({
       vec4 ferrari = texture2D(u_ferrari, v_texCoord);
       float mask = texture2D(u_mask, v_texCoord).r;
       
-      // Blend based on mask
-      vec4 color = mix(portrait, ferrari, mask * (1.0 + u_debug * 0.5));
+      // Blend based on mask - slightly boost mask for more visibility
+      float maskBoost = mask * 1.15; // Boost by 15% for more visibility
+      maskBoost = min(maskBoost, 1.0); // Clamp to 1.0
+      vec4 color = mix(portrait, ferrari, maskBoost * (1.0 + u_debug * 0.5));
       gl_FragColor = color;
     }
   `;
@@ -288,7 +290,7 @@ export default function PortraitFluidReveal({
       y: centerY,
       vx: 0,
       vy: 0,
-      radius: 0.15,
+      radius: 0.22, // Increased from 0.15 for more visibility
     }));
   }, [frontSrc, revealSrc, createProgram, loadTexture]);
 
@@ -356,10 +358,11 @@ export default function PortraitFluidReveal({
     const tempCtx = tempCanvas.getContext("2d");
     if (!tempCtx) return;
 
-    const gradient = tempCtx.createRadialGradient(0, 0, 0, 0, 0, 80);
+    const gradient = tempCtx.createRadialGradient(0, 0, 0, 0, 0, 100);
     gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
-    gradient.addColorStop(0.3, "rgba(255, 255, 255, 0.9)");
-    gradient.addColorStop(0.6, "rgba(255, 255, 255, 0.5)");
+    gradient.addColorStop(0.25, "rgba(255, 255, 255, 0.95)");
+    gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.75)");
+    gradient.addColorStop(0.75, "rgba(255, 255, 255, 0.4)");
     gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
 
     tempCtx.globalCompositeOperation = "lighten";
@@ -367,16 +370,16 @@ export default function PortraitFluidReveal({
     blobsRef.current.forEach((blob) => {
       tempCtx.save();
       tempCtx.translate(blob.x, blob.y);
-      tempCtx.scale(blob.radius * 1.5, blob.radius * 1.5);
+      tempCtx.scale(blob.radius * 1.8, blob.radius * 1.8); // Increased from 1.5 to 1.8
       tempCtx.fillStyle = gradient;
       tempCtx.beginPath();
-      tempCtx.arc(0, 0, 40, 0, Math.PI * 2);
+      tempCtx.arc(0, 0, 50, 0, Math.PI * 2); // Increased from 40 to 50
       tempCtx.fill();
       tempCtx.restore();
     });
 
-    // Apply blur for soft edges
-    ctx.filter = "blur(12px)";
+    // Apply blur for soft edges (slightly less blur for more visibility)
+    ctx.filter = "blur(10px)";
     ctx.globalCompositeOperation = "source-over";
     ctx.drawImage(tempCanvas, 0, 0);
     ctx.filter = "none";
