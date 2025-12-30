@@ -37,6 +37,7 @@ export default function PortraitFluidReveal({
   const [isRevealed, setIsRevealed] = useState(false);
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
+  const [imageAspectRatio, setImageAspectRatio] = useState<number | null>(null);
 
   const blobsRef = useRef<Blob[]>([]);
   const prefersReducedMotion =
@@ -163,6 +164,7 @@ export default function PortraitFluidReveal({
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
           resolve(texture);
         };
 
@@ -215,6 +217,25 @@ export default function PortraitFluidReveal({
     );
     texCoordBufferRef.current = texCoordBuffer;
 
+    // Load portrait image first to get aspect ratio
+    const portraitImage = new Image();
+    portraitImage.crossOrigin = "anonymous";
+
+    await new Promise<void>((resolve) => {
+      portraitImage.onload = () => {
+        const aspectRatio = portraitImage.width / portraitImage.height;
+        setImageAspectRatio(aspectRatio);
+        resolve();
+      };
+      portraitImage.onerror = () => {
+        console.warn(
+          `[PortraitFluidReveal] Failed to load portrait image: ${frontSrc}`
+        );
+        resolve(); // Continue even if image fails
+      };
+      portraitImage.src = frontSrc;
+    });
+
     // Load textures
     const portraitTex = await loadTexture(gl, frontSrc);
     const ferrariTex = await loadTexture(gl, revealSrc);
@@ -259,10 +280,12 @@ export default function PortraitFluidReveal({
       maskTextureRef.current = maskTexture;
     }
 
-    // Initialize blobs
+    // Initialize blobs - start at center in pixel coordinates
+    const centerX = maskCanvas.width / 2;
+    const centerY = maskCanvas.height / 2;
     blobsRef.current = Array.from({ length: 5 }, () => ({
-      x: 0.5,
-      y: 0.5,
+      x: centerX,
+      y: centerY,
       vx: 0,
       vy: 0,
       radius: 0.15,
@@ -374,7 +397,18 @@ export default function PortraitFluidReveal({
   const render = useCallback(() => {
     const gl = glRef.current;
     const program = programRef.current;
-    if (!gl || !program || !texturesLoadedRef.current) return;
+    if (!gl || !program || !texturesLoadedRef.current) {
+      return;
+    }
+
+    // Check if buffers exist
+    if (
+      !positionBufferRef.current ||
+      !texCoordBufferRef.current ||
+      !maskTextureRef.current
+    ) {
+      return;
+    }
 
     updateMask();
 
@@ -395,32 +429,42 @@ export default function PortraitFluidReveal({
     // Set up textures
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, portraitTextureRef.current);
-    gl.uniform1i(gl.getUniformLocation(program, "u_portrait"), 0);
+    const portraitLoc = gl.getUniformLocation(program, "u_portrait");
+    if (portraitLoc !== null) gl.uniform1i(portraitLoc, 0);
 
     gl.activeTexture(gl.TEXTURE1);
     gl.bindTexture(gl.TEXTURE_2D, ferrariTextureRef.current);
-    gl.uniform1i(gl.getUniformLocation(program, "u_ferrari"), 1);
+    const ferrariLoc = gl.getUniformLocation(program, "u_ferrari");
+    if (ferrariLoc !== null) gl.uniform1i(ferrariLoc, 1);
 
     gl.activeTexture(gl.TEXTURE2);
     gl.bindTexture(gl.TEXTURE_2D, maskTextureRef.current);
-    gl.uniform1i(gl.getUniformLocation(program, "u_mask"), 2);
+    const maskLoc = gl.getUniformLocation(program, "u_mask");
+    if (maskLoc !== null) gl.uniform1i(maskLoc, 2);
 
-    gl.uniform1f(gl.getUniformLocation(program, "u_debug"), DEBUG ? 1.0 : 0.0);
+    const debugLoc = gl.getUniformLocation(program, "u_debug");
+    if (debugLoc !== null) gl.uniform1f(debugLoc, DEBUG ? 1.0 : 0.0);
 
     // Draw
     gl.drawArrays(gl.TRIANGLES, 0, 6);
 
+    // Continue animation loop if hovering or revealed
     if (isRevealed || isHovered) {
       rafRef.current = requestAnimationFrame(render);
+    } else {
+      rafRef.current = null;
     }
   }, [updateMask, isRevealed, isHovered]);
 
   // Initialize on mount
   useEffect(() => {
+    let mounted = true;
+
     const init = async () => {
       await initWebGL();
-      // Start render loop
-      if (texturesLoadedRef.current) {
+      // Start initial render after textures load
+      if (mounted && texturesLoadedRef.current) {
+        // Render once to show portrait
         render();
       }
     };
@@ -428,8 +472,10 @@ export default function PortraitFluidReveal({
     init();
 
     return () => {
+      mounted = false;
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
     };
   }, [initWebGL, render]);
@@ -513,8 +559,11 @@ export default function PortraitFluidReveal({
 
     const resize = () => {
       const rect = container.getBoundingClientRect();
-      canvas.width = rect.width * window.devicePixelRatio;
-      canvas.height = rect.height * window.devicePixelRatio;
+      if (rect.width === 0 || rect.height === 0) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
 
@@ -526,8 +575,16 @@ export default function PortraitFluidReveal({
       if (maskCanvasRef.current) {
         maskCanvasRef.current.width = canvas.width;
         maskCanvasRef.current.height = canvas.height;
+
+        // Update blob positions to center when resized
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        blobsRef.current.forEach((blob) => {
+          blob.x = centerX;
+          blob.y = centerY;
+        });
+
         // Re-initialize mask texture if WebGL is ready
-        const gl = glRef.current;
         if (gl && maskTextureRef.current) {
           gl.bindTexture(gl.TEXTURE_2D, maskTextureRef.current);
           gl.texImage2D(
@@ -542,17 +599,25 @@ export default function PortraitFluidReveal({
       }
 
       // Restart render if needed
-      if (texturesLoadedRef.current && (isHovered || isRevealed)) {
+      if (texturesLoadedRef.current) {
         if (!rafRef.current) {
           render();
         }
       }
     };
 
-    resize();
+    // Use ResizeObserver for better performance
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(container);
+
+    resize(); // Initial resize
+
     window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, []);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", resize);
+    };
+  }, [render]);
 
   return (
     <div className="w-full">
@@ -569,7 +634,7 @@ export default function PortraitFluidReveal({
         className="relative rounded-2xl overflow-hidden border"
         style={{
           borderColor: "rgba(220, 38, 38, 0.3)",
-          aspectRatio: "4/5",
+          aspectRatio: imageAspectRatio ? `${imageAspectRatio}` : "4/5", // Fallback to 4/5 if aspect ratio not loaded yet
         }}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
@@ -584,6 +649,14 @@ export default function PortraitFluidReveal({
           style={{ display: "block" }}
         />
       </div>
+
+      {/* Hint text (desktop only) */}
+      <p
+        className="text-xs text-center mt-2 opacity-60 hidden md:block transition-opacity"
+        style={{ color: "#9CA3AF" }}
+      >
+        Hover to reveal
+      </p>
     </div>
   );
 }
