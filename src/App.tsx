@@ -8,6 +8,8 @@ import AuroraBackground from "./components/AuroraBackground";
 import CheckeredMoiré from "./components/backgrounds/CheckeredMoiré";
 import TelemetrySuzukaBackground from "./components/backgrounds/TelemetrySuzukaBackground";
 import HudTelemetryBackground from "./components/backgrounds/HudTelemetryBackground";
+import CircuitMapBackground from "./components/backgrounds/CircuitMapBackground";
+import SuzukaCircuitBackground from "./components/backgrounds/SuzukaCircuitBackground";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
 import ExperienceTimeline from "./components/sections/ExperienceTimeline";
@@ -39,6 +41,12 @@ export default function App() {
       className="min-h-screen relative overflow-x-hidden bg-transparent"
       style={{ color: "var(--white)" }}
     >
+      {/* Suzuka Circuit Background */}
+      <SuzukaCircuitBackground />
+
+      {/* Circuit Map Background */}
+      <CircuitMapBackground />
+
       {/* HUD Telemetry Background */}
       <HudTelemetryBackground />
 
