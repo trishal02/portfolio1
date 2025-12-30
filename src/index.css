@@ -467,3 +467,66 @@ html {
     display: none !important;
   }
 }
+
+/* Checkered Moiré Pattern Animations */
+@keyframes moireWave1 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 0.08;
+  }
+  25% {
+    transform: translate(2px, -2px) rotate(0.5deg) scale(1.01);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translate(-2px, 2px) rotate(-0.5deg) scale(0.99);
+    opacity: 0.08;
+  }
+  75% {
+    transform: translate(1px, 1px) rotate(0.3deg) scale(1.005);
+    opacity: 0.09;
+  }
+}
+
+@keyframes moireWave2 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 0.06;
+  }
+  25% {
+    transform: translate(-1px, 1px) rotate(-0.3deg) scale(0.995);
+    opacity: 0.08;
+  }
+  50% {
+    transform: translate(1px, -1px) rotate(0.3deg) scale(1.005);
+    opacity: 0.06;
+  }
+  75% {
+    transform: translate(-2px, -2px) rotate(-0.5deg) scale(0.99);
+    opacity: 0.07;
+  }
+}
+
+@keyframes moireWave3 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 0.04;
+  }
+  33% {
+    transform: translate(1.5px, -1.5px) rotate(0.4deg) scale(1.01);
+    opacity: 0.05;
+  }
+  66% {
+    transform: translate(-1.5px, 1.5px) rotate(-0.4deg) scale(0.99);
+    opacity: 0.04;
+  }
+}
+
+/* Respect reduced motion for moiré animations */
+@media (prefers-reduced-motion: reduce) {
+  [style*="moireWave1"],
+  [style*="moireWave2"],
+  [style*="moireWave3"] {
+    animation: none !important;
+  }
+}

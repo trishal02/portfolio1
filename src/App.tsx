@@ -5,6 +5,9 @@ import Footer from "./components/layout/Footer";
 import F1Background from "./components/background/F1Background";
 import BackgroundAnimation from "./components/BackgroundAnimation";
 import AuroraBackground from "./components/AuroraBackground";
+import CheckeredMoiré from "./components/backgrounds/CheckeredMoiré";
+import TelemetrySuzukaBackground from "./components/backgrounds/TelemetrySuzukaBackground";
+import HudTelemetryBackground from "./components/backgrounds/HudTelemetryBackground";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
 import ExperienceTimeline from "./components/sections/ExperienceTimeline";
@@ -36,6 +39,15 @@ export default function App() {
       className="min-h-screen relative overflow-x-hidden bg-transparent"
       style={{ color: "var(--white)" }}
     >
+      {/* HUD Telemetry Background */}
+      <HudTelemetryBackground />
+
+      {/* Telemetry Suzuka Background */}
+      <TelemetrySuzukaBackground />
+
+      {/* Checkered Moiré Background */}
+      <CheckeredMoiré />
+
       {/* Aurora Background */}
       <AuroraBackground />
 
