@@ -36,7 +36,9 @@ export const profileData = {
     last: "REDDY",
   },
   tagline: "Software Developer | C++ & Python | Distributed Systems",
-  about: `As a National Level Wrestler and College Captain, I bring the same grit and competitive drive to software engineering that I do to the mat. My athletic background has instilled in me exceptional leadership skills and the ability to perform under pressure—qualities that translate directly into building robust, scalable systems. I specialize in C++ and Python, with a focus on backend development and distributed computing. Experienced in designing scalable, data-driven applications and certified in AWS Cloud, I leverage my technical expertise to deliver high-performance engineering solutions.`,
+  about: `I'm a software developer who likes building systems that don't just work — they stay reliable under load. I focus on backend engineering, distributed-systems fundamentals, and cloud deployments, and I enjoy turning messy requirements into clean, maintainable products.
+
+Outside of code, I'm a national-level wrestling athlete — which shows up in how I work: disciplined execution, consistent iteration, and calm under pressure. I'm currently building projects across AI + infrastructure and looking for roles where I can ship impactful software and improve reliability at scale.`,
   quote: "Code. Create. Innovate.",
   contact: {
     email: "tindireddy@binghamton.edu",
@@ -79,6 +81,26 @@ export const profileData = {
       ],
     },
   ] as Experience[],
+  startups: [
+    {
+      title: "Thrill AI | Voice Intelligence",
+      period: "2024 - Present",
+      description:
+        "A high-precision voice intelligence platform revolutionizing customer engagement through AI-powered autonomous agents. Built to handle complex interactions including negotiation, appointment booking, and 24/7 customer support with seamless multilingual context-switching across Hindi, Telugu, and English. The platform leverages cutting-edge voice AI technology to deliver natural, human-like conversations at enterprise scale.",
+      tech: "Vercel, OpenAI, Anthropic, AWS, Google Cloud, Stripe",
+      impact: "AI voice infrastructure for automated customer engagement with ultra-low latency responses and enterprise-grade security.",
+      points: [
+        "Ultra-low latency: < 200ms response time enabling real-time natural conversations without perceptible delays",
+        "Multilingual intelligence: Seamless context-switching between Hindi, Telugu, and English with native-level understanding",
+        "Enterprise security: AES-256 encryption, SOC2 Type II compliance, and secure-by-design architecture for sensitive customer data",
+        "Payment integration: UPI support and automated digital receipt generation for seamless transaction handling",
+        "Autonomous agents: Advanced AI agents capable of complex negotiation, appointment scheduling, and multi-turn conversations",
+        "Scalable infrastructure: Built on AWS and Google Cloud with auto-scaling capabilities to handle millions of concurrent conversations",
+        "Real-time analytics: Comprehensive dashboard for monitoring conversation quality, agent performance, and business metrics",
+      ],
+      demo: "https://thrill.vision/",
+    },
+  ] as Project[],
   projects: [
     {
       title: "Social Media Election Analysis Platform",

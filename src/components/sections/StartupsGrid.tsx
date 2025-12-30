@@ -6,39 +6,39 @@ import Chip from "../ui/Chip";
 import Badge from "../ui/Badge";
 import type { Project } from "../../data/profile";
 
-interface ProjectsGridProps {
-  projects: Project[];
+interface StartupsGridProps {
+  startups: Project[];
 }
 
-export default function ProjectsGrid({ projects }: ProjectsGridProps) {
+export default function StartupsGrid({ startups }: StartupsGridProps) {
   return (
-    <Section id="projects" title="Projects" className="max-w-7xl mx-auto">
+    <Section id="startups" title="Startups" className="max-w-7xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project, index) => (
-          <ProjectCard key={index} project={project} isFeatured={index === 0} />
+        {startups.map((startup, index) => (
+          <StartupCard key={index} startup={startup} isFeatured={index === 0} />
         ))}
       </div>
     </Section>
   );
 }
 
-interface ProjectCardProps {
-  project: Project;
+interface StartupCardProps {
+  startup: Project;
   isFeatured?: boolean;
 }
 
-function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
+function StartupCard({ startup, isFeatured = false }: StartupCardProps) {
   const [showAll, setShowAll] = useState(false);
-  const maxBullets = 3;
-  const hasMoreBullets = project.points.length > maxBullets;
+  const maxBullets = 4;
+  const hasMoreBullets = startup.points.length > maxBullets;
   const displayedBullets = showAll
-    ? project.points
-    : project.points.slice(0, maxBullets);
+    ? startup.points
+    : startup.points.slice(0, maxBullets);
 
   return (
     <Card hover className="flex flex-col h-full">
       {/* Impact Line */}
-      {project.impact && (
+      {startup.impact && (
         <div
           className="mb-4 p-3 rounded border-l-4"
           style={{
@@ -53,7 +53,7 @@ function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
             >
               Impact:
             </span>{" "}
-            {project.impact}
+            {startup.impact}
           </p>
         </div>
       )}
@@ -66,7 +66,7 @@ function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
               className="text-xl font-display font-bold leading-tight"
               style={{ color: "#FFFFFF" }}
             >
-              {project.title}
+              {startup.title}
             </h3>
             {isFeatured && (
               <Badge variant="hard" className="text-xs">
@@ -78,23 +78,20 @@ function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
             variant="hard"
             className="whitespace-nowrap text-xs flex-shrink-0"
           >
-            {project.period}
+            {startup.period}
           </Chip>
         </div>
       </div>
 
-      {/* 1-line Summary */}
-      <p
-        className="text-sm mb-4 leading-relaxed line-clamp-2"
-        style={{ color: "#9CA3AF" }}
-      >
-        {project.description}
+      {/* Description */}
+      <p className="text-sm mb-4 leading-relaxed" style={{ color: "#9CA3AF" }}>
+        {startup.description}
       </p>
 
       {/* Tech Chips */}
       <div className="mb-4">
         <div className="flex flex-wrap gap-2">
-          {project.tech.split(", ").map((tech, i) => (
+          {startup.tech.split(", ").map((tech, i) => (
             <Chip key={i} variant="default" className="text-xs">
               {tech.trim()}
             </Chip>
@@ -102,7 +99,7 @@ function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
         </div>
       </div>
 
-      {/* Bullets (2-4 shown by default) */}
+      {/* Bullets */}
       <ul className="space-y-2 mb-4 flex-grow">
         {displayedBullets.map((point, i) => (
           <li
@@ -131,19 +128,19 @@ function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
         >
           {showAll
             ? "Show less"
-            : `Show ${project.points.length - maxBullets} more`}
+            : `Show ${startup.points.length - maxBullets} more`}
         </button>
       )}
 
       {/* Action Links Row */}
-      {(project.github || project.demo || project.paper) && (
+      {(startup.github || startup.demo || startup.paper) && (
         <div
           className="pt-4 mt-auto border-t flex gap-3 flex-wrap"
           style={{ borderTopColor: "rgba(220, 38, 38, 0.2)" }}
         >
-          {project.github && (
+          {startup.github && (
             <a
-              href={project.github}
+              href={startup.github}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-xs font-display font-medium transition-colors hover:opacity-80"
@@ -154,9 +151,9 @@ function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
               GitHub
             </a>
           )}
-          {project.demo && (
+          {startup.demo && (
             <a
-              href={project.demo}
+              href={startup.demo}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-xs font-display font-medium transition-colors hover:opacity-80"
@@ -167,9 +164,9 @@ function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
               Live
             </a>
           )}
-          {project.paper && (
+          {startup.paper && (
             <a
-              href={project.paper}
+              href={startup.paper}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-xs font-display font-medium transition-colors hover:opacity-80"

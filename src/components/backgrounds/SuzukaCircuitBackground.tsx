@@ -27,6 +27,14 @@ export default function SuzukaCircuitBackground() {
       className="fixed inset-0 -z-10 overflow-hidden bg-slate-950 pointer-events-none"
       aria-hidden="true"
     >
+      {/* TEMP DEBUG MARKER - Remove after visibility confirmed */}
+      <div
+        className="fixed top-2 left-2 z-[9999] text-green-500 font-mono text-xs font-bold opacity-100"
+        style={{ zIndex: 9999 }}
+      >
+        BG DEBUG VISIBLE
+      </div>
+
       <svg
         className="absolute inset-0 w-full h-full"
         viewBox="0 0 2000 1000"
@@ -52,17 +60,17 @@ export default function SuzukaCircuitBackground() {
           </filter>
         </defs>
 
-        {/* Main Circuit Outline */}
+        {/* Main Circuit Outline - TEMP INCREASED VISIBILITY */}
         <motion.path
           d={circuitPath}
           fill="none"
-          stroke="rgba(59, 130, 246, 0.15)"
-          strokeWidth="1.5"
+          stroke="rgba(59, 130, 246, 0.8)"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
           filter="url(#suzukaTrackGlow)"
           style={{
-            filter: "blur(0.5px) drop-shadow(0 0 3px rgba(59, 130, 246, 0.2))",
+            filter: "blur(0.5px) drop-shadow(0 0 6px rgba(59, 130, 246, 0.8))",
           }}
           initial={shouldReduceMotion ? {} : { pathLength: 0 }}
           animate={
@@ -218,7 +226,6 @@ export default function SuzukaCircuitBackground() {
             const delay = i * 1.75;
             // Vary colors slightly for visual interest (blue/cyan spectrum)
             const hue = 200 + (i % 5) * 10; // 200-240 range
-            const carColor = `hsla(${hue}, 70%, 60%, 0.5)`;
             const tailColor = `hsla(${hue}, 70%, 60%, 0.25)`;
 
             return (
@@ -260,13 +267,13 @@ export default function SuzukaCircuitBackground() {
                   }
                 />
 
-                {/* Main car dot */}
+                {/* Main car dot - TEMP INCREASED VISIBILITY */}
                 <motion.circle
-                  r="3"
-                  fill={carColor}
+                  r="4"
+                  fill={`hsla(${hue}, 70%, 60%, 0.8)`}
                   filter="url(#suzukaCarGlow)"
                   style={{
-                    filter: `blur(0.5px) drop-shadow(0 0 8px hsla(${hue}, 70%, 60%, 0.6))`,
+                    filter: `blur(0.5px) drop-shadow(0 0 12px hsla(${hue}, 70%, 60%, 0.9))`,
                   }}
                   animate={
                     shouldReduceMotion

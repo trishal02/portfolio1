@@ -7,7 +7,7 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
-    <div className="flex flex-col h-full bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 group">
+    <div className="flex flex-col h-full bg-slate-900/40 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 group">
       <div className="p-6 flex flex-col flex-grow">
         <div className="flex justify-between items-start mb-2">
           <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
@@ -37,7 +37,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             {project.tech.split(",").map((t) => (
               <span
                 key={t}
-                className="px-2 py-1 text-xs font-medium text-gray-300 bg-gray-800 rounded border border-gray-700"
+                className="px-2 py-1 text-xs font-medium text-gray-300 bg-white/5 backdrop-blur-sm rounded border border-white/10"
               >
                 {t.trim()}
               </span>
@@ -47,7 +47,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       </div>
 
       {/* Action Links */}
-      <div className="px-6 py-4 bg-gray-900 border-t border-gray-800 flex gap-4">
+      <div className="px-6 py-4 bg-slate-900/40 backdrop-blur-md border-t border-white/10 flex gap-4">
         {project.github ? (
           <a
             href={project.github}

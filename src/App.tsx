@@ -14,6 +14,7 @@ import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
 import ExperienceTimeline from "./components/sections/ExperienceTimeline";
 import ProjectsGrid from "./components/sections/ProjectsGrid";
+import StartupsGrid from "./components/sections/StartupsGrid";
 import Education from "./components/sections/Education";
 import Skills from "./components/sections/Skills";
 import Extracurriculars from "./components/sections/Extracurriculars";
@@ -30,6 +31,7 @@ export default function App() {
     { label: "ABOUT", href: "#about" },
     { label: "EDUCATION", href: "#education" },
     { label: "EXPERIENCE", href: "#experience" },
+    { label: "STARTUPS", href: "#startups" },
     { label: "PROJECTS", href: "#projects" },
     { label: "SKILLS", href: "#skills" },
     { label: "EXTRACURRICULARS", href: "#extracurriculars" },
@@ -78,6 +80,7 @@ export default function App() {
         <About content={profileData.about} />
         <Education education={profileData.education} />
         <ExperienceTimeline experiences={profileData.experience} />
+        <StartupsGrid startups={profileData.startups} />
         <ProjectsGrid projects={profileData.projects} />
         <Skills />
         <Extracurriculars extracurriculars={profileData.extracurriculars} />
