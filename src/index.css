@@ -227,3 +227,65 @@ html {
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1;
 }
+
+/* 3D Flip Card Styles */
+.flip-card-wrapper {
+  perspective: 1000px;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  cursor: pointer;
+  outline: none;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+/* Desktop: Hover and focus-within trigger flip */
+@media (hover: hover) {
+  .flip-card-wrapper:focus-within .flip-card-inner,
+  .flip-card-wrapper:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+/* Mobile: Click/tap triggers flip via class */
+.flip-card-wrapper.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .flip-card-inner {
+    transition: transform 0.01ms;
+  }
+  
+  @media (hover: hover) {
+    .flip-card-wrapper:focus-within .flip-card-inner,
+    .flip-card-wrapper:hover .flip-card-inner {
+      transform: none;
+    }
+  }
+  
+  .flip-card-wrapper.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+}
