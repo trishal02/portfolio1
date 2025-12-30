@@ -35,6 +35,27 @@ function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <Card hover className="flex flex-col h-full">
+      {/* Impact Line */}
+      {project.impact && (
+        <div
+          className="mb-4 p-3 rounded border-l-4"
+          style={{
+            backgroundColor: "rgba(220, 38, 38, 0.1)",
+            borderLeftColor: "#DC2626",
+          }}
+        >
+          <p className="text-sm leading-relaxed" style={{ color: "#FFFFFF" }}>
+            <span
+              className="font-display font-semibold"
+              style={{ color: "#DC2626" }}
+            >
+              Impact:
+            </span>{" "}
+            {project.impact}
+          </p>
+        </div>
+      )}
+
       {/* Title and Period */}
       <div className="mb-3">
         <div className="flex justify-between items-start gap-2 mb-2">
@@ -44,7 +65,10 @@ function ProjectCard({ project }: ProjectCardProps) {
           >
             {project.title}
           </h3>
-          <Chip variant="hard" className="whitespace-nowrap text-xs flex-shrink-0">
+          <Chip
+            variant="hard"
+            className="whitespace-nowrap text-xs flex-shrink-0"
+          >
             {project.period}
           </Chip>
         </div>
@@ -96,7 +120,9 @@ function ProjectCard({ project }: ProjectCardProps) {
           style={{ color: "#DC2626" }}
           aria-label={showAll ? "Show less" : "Show more"}
         >
-          {showAll ? "Show less" : `Show ${project.points.length - maxBullets} more`}
+          {showAll
+            ? "Show less"
+            : `Show ${project.points.length - maxBullets} more`}
         </button>
       )}
 

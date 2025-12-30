@@ -36,7 +36,7 @@ export const profileData = {
     last: "REDDY",
   },
   tagline: "Software Developer | C++ & Python | Distributed Systems",
-  about: `Software Developer with expertise in C++ and Python, specializing in backend development and distributed computing. Experienced in designing scalable, data-driven applications. Certified in AWS Cloud, with a passion for leveraging technical skills to enhance backend engineering projects.`,
+  about: `As a National Level Wrestler and College Captain, I bring the same grit and competitive drive to software engineering that I do to the mat. My athletic background has instilled in me exceptional leadership skills and the ability to perform under pressure—qualities that translate directly into building robust, scalable systems. I specialize in C++ and Python, with a focus on backend development and distributed computing. Experienced in designing scalable, data-driven applications and certified in AWS Cloud, I leverage my technical expertise to deliver high-performance engineering solutions.`,
   quote: "Code. Create. Innovate.",
   contact: {
     email: "tindireddy@binghamton.edu",

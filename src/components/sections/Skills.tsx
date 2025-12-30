@@ -1,37 +1,39 @@
 import { useEffect, useState } from "react";
 import Section from "../layout/Section";
 import Card from "../ui/Card";
+import { skillGroups, type SkillTier } from "../../data/skills";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
 
-interface SkillsProps {
-  skills: string[];
-}
+export default function Skills() {
+  const tiers: {
+    tier: SkillTier;
+    label: string;
+    color: string;
+    baseProficiency: number;
+  }[] = [
+    {
+      tier: "high",
+      label: "High Performance",
+      color: "#10B981",
+      baseProficiency: 90,
+    },
+    {
+      tier: "intermediate",
+      label: "Intermediate",
+      color: "#FBBF24",
+      baseProficiency: 70,
+    },
+    {
+      tier: "beginner",
+      label: "Beginner",
+      color: "#DC2626",
+      baseProficiency: 50,
+    },
+  ];
 
-interface SkillProgress {
-  skill: string;
-  proficiency: number; // 0-100
-}
-
-export default function Skills({ skills }: SkillsProps) {
-  // Group skills into "tyre compounds" - Soft (most proficient), Medium, Hard
-  const softSkills = skills.slice(0, Math.ceil(skills.length / 3));
-  const mediumSkills = skills.slice(
-    Math.ceil(skills.length / 3),
-    Math.ceil((skills.length * 2) / 3)
-  );
-  const hardSkills = skills.slice(Math.ceil((skills.length * 2) / 3));
-
-  // Assign proficiency levels
-  const getSkillProgress = (skillList: string[], baseProficiency: number): SkillProgress[] => {
-    return skillList.map((skill) => ({
-      skill,
-      proficiency: baseProficiency + Math.random() * 10 - 5, // Add slight variation
-    }));
+  const getSkillsByTier = (tier: SkillTier) => {
+    return skillGroups.filter((group) => group.tier === tier);
   };
-
-  const softProgress = getSkillProgress(softSkills, 90);
-  const mediumProgress = getSkillProgress(mediumSkills, 70);
-  const hardProgress = getSkillProgress(hardSkills, 50);
 
   const { elementRef, isVisible } = useIntersectionObserver<HTMLDivElement>({
     threshold: 0.2,
@@ -39,97 +41,63 @@ export default function Skills({ skills }: SkillsProps) {
   });
 
   return (
-    <Section id="skills" title="Technical Skills" className="max-w-6xl mx-auto">
-      <div ref={elementRef} className="grid md:grid-cols-3 gap-6">
-        {/* Soft Compound - Most Proficient */}
-        <Card>
-          <div className="mb-4">
-            <h3 
-              className="text-lg font-display font-bold mb-2 uppercase tracking-wider"
-              style={{ color: "#10B981" }}
-            >
-              Soft Compound
-            </h3>
-            <p 
-              className="text-xs font-body"
-              style={{ color: "#9CA3AF" }}
-            >
-              Maximum Performance
-            </p>
-          </div>
-          <div className="space-y-3">
-            {softProgress.map(({ skill, proficiency }, index) => (
-              <SkillProgressBar
-                key={skill}
-                skill={skill}
-                proficiency={proficiency}
-                color="#10B981"
-                isVisible={isVisible}
-                delay={index * 50}
-              />
-            ))}
-          </div>
-        </Card>
+    <Section id="skills" title="Technical Skills" className="max-w-7xl mx-auto">
+      <div
+        ref={elementRef}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        {tiers.map(({ tier, label, color, baseProficiency }) => {
+          const groups = getSkillsByTier(tier);
 
-        {/* Medium Compound */}
-        <Card>
-          <div className="mb-4">
-            <h3 
-              className="text-lg font-display font-bold mb-2 uppercase tracking-wider"
-              style={{ color: "#FBBF24" }}
-            >
-              Medium Compound
-            </h3>
-            <p 
-              className="text-xs font-body"
-              style={{ color: "#9CA3AF" }}
-            >
-              Balanced Performance
-            </p>
-          </div>
-          <div className="space-y-3">
-            {mediumProgress.map(({ skill, proficiency }, index) => (
-              <SkillProgressBar
-                key={skill}
-                skill={skill}
-                proficiency={proficiency}
-                color="#FBBF24"
-                isVisible={isVisible}
-                delay={index * 50}
-              />
-            ))}
-          </div>
-        </Card>
+          return (
+            <Card key={tier} hover>
+              <div className="mb-6">
+                <h3
+                  className="text-lg font-display font-bold mb-2 uppercase tracking-wider"
+                  style={{ color }}
+                >
+                  {label}
+                </h3>
+                <p className="text-xs font-body" style={{ color: "#9CA3AF" }}>
+                  {tier === "high"
+                    ? "Strongest Skills"
+                    : tier === "intermediate"
+                    ? "Proficient"
+                    : "Learning & Exploring"}
+                </p>
+              </div>
 
-        {/* Hard Compound */}
-        <Card>
-          <div className="mb-4">
-            <h3 
-              className="text-lg font-display font-bold mb-2 uppercase tracking-wider"
-              style={{ color: "#DC2626" }}
-            >
-              Hard Compound
-            </h3>
-            <p 
-              className="text-xs font-body"
-              style={{ color: "#9CA3AF" }}
-            >
-              Durable & Reliable
-            </p>
-          </div>
-          <div className="space-y-3">
-            {hardProgress.map(({ skill, proficiency }, index) => (
-              <SkillProgressBar
-                key={skill}
-                skill={skill}
-                proficiency={proficiency}
-                color="#DC2626"
-                isVisible={isVisible}
-                delay={index * 50}
-              />
-            ))}
-          </div>
-        </Card>
+              <div className="space-y-4">
+                {groups.map((group, groupIndex) => (
+                  <div key={groupIndex} className="mb-4">
+                    <h4
+                      className="text-xs font-display font-semibold uppercase tracking-wider mb-3"
+                      style={{ color: "#FFFFFF" }}
+                    >
+                      {group.title}
+                    </h4>
+                    <div className="space-y-2.5">
+                      {group.items.map((skill, skillIndex) => {
+                        const proficiency =
+                          baseProficiency + Math.random() * 10 - 5;
+                        return (
+                          <SkillProgressBar
+                            key={skillIndex}
+                            skill={skill}
+                            proficiency={proficiency}
+                            color={color}
+                            isVisible={isVisible}
+                            delay={(groupIndex * 10 + skillIndex) * 30}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          );
+        })}
       </div>
     </Section>
   );
@@ -164,20 +132,17 @@ function SkillProgressBar({
   return (
     <div className="space-y-1">
       <div className="flex justify-between items-center">
-        <span 
+        <span
           className="text-xs font-display font-semibold uppercase tracking-wider"
           style={{ color: "#FFFFFF" }}
         >
           {skill}
         </span>
-        <span 
-          className="text-xs font-body font-medium"
-          style={{ color }}
-        >
+        <span className="text-xs font-body font-medium" style={{ color }}>
           {Math.round(animatedProficiency)}%
         </span>
       </div>
-      <div 
+      <div
         className="h-1.5 rounded-full overflow-hidden"
         style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
       >
