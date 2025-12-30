@@ -60,12 +60,12 @@ export default function About({ content }: AboutProps) {
       >
         <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
           {/* Photo with fluid hover reveal */}
-          <div className="flex-shrink-0 w-full md:w-80 lg:w-96">
+          <div className="flex-shrink-0 w-full md:w-80 lg:w-96 relative z-0">
             <PortraitFluidReveal />
           </div>
 
           {/* Text Content */}
-          <div className="flex-1 space-y-4 min-w-0">
+          <div className="flex-1 space-y-4 min-w-0 relative z-10">
             {paragraphs.map((paragraph, i) => (
               <p
                 key={i}

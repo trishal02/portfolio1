@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
-// Debug mode - set to true to see reveal clearly
+// Debug mode - set to true to see reveal clearly with crosshair and performance HUD
 const DEBUG = false;
 
 interface PortraitFluidRevealProps {
@@ -32,18 +32,61 @@ export default function PortraitFluidReveal({
   const texCoordBufferRef = useRef<WebGLBuffer | null>(null);
   const rafRef = useRef<number | null>(null);
   const texturesLoadedRef = useRef(false);
+  const touchTimeoutRef = useRef<number | null>(null);
+  const tempCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tempCtxRef = useRef<CanvasRenderingContext2D | null>(null);
+  const gradientRef = useRef<CanvasGradient | null>(null);
+  const rectRef = useRef<DOMRect | null>(null); // Cached container rect
+  const mouseXRef = useRef<number>(0); // Fast-changing values in refs
+  const mouseYRef = useRef<number>(0);
+  const maskOpacityRef = useRef<number>(0);
+  const fpsRef = useRef<number>(0);
+  const lastFrameTimeRef = useRef<number>(0);
+  const frameCountRef = useRef<number>(0);
 
   const [isHovered, setIsHovered] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
   const [imageAspectRatio, setImageAspectRatio] = useState<number | null>(null);
+  // Debug state for HUD (only when DEBUG=true)
+  const [debugInfo, setDebugInfo] = useState({
+    mouseX: 0,
+    mouseY: 0,
+    canvasX: 0,
+    canvasY: 0,
+    dpr: 1,
+    fps: 0,
+  });
 
   const blobsRef = useRef<Blob[]>([]);
   const prefersReducedMotion =
     typeof window !== "undefined"
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
+
+  // Spring physics constants - tightened for better tracking
+  const STIFFNESS = 250; // Increased from 180
+  const DAMPING = 15; // Reduced from 22 for less delay
+
+  // Helper: Clamp value between min and max
+  const clamp = useCallback((value: number, min: number, max: number) => {
+    return Math.max(min, Math.min(max, value));
+  }, []);
+
+  // Helper: Get container-relative coordinates from event (uses cached rect)
+  const getContainerCoords = useCallback((clientX: number, clientY: number) => {
+    if (!rectRef.current) return { x: 0, y: 0 };
+    return {
+      x: clientX - rectRef.current.left,
+      y: clientY - rectRef.current.top,
+    };
+  }, []);
+
+  // Update cached rect (call on enter/resize only)
+  const updateRect = useCallback(() => {
+    if (containerRef.current) {
+      rectRef.current = containerRef.current.getBoundingClientRect();
+    }
+  }, []);
 
   // Vertex shader source
   const vertexShaderSource = `
@@ -65,6 +108,7 @@ export default function PortraitFluidReveal({
     uniform sampler2D u_ferrari;
     uniform sampler2D u_mask;
     uniform float u_debug;
+    uniform float u_opacity;
     
     varying vec2 v_texCoord;
     
@@ -73,9 +117,9 @@ export default function PortraitFluidReveal({
       vec4 ferrari = texture2D(u_ferrari, v_texCoord);
       float mask = texture2D(u_mask, v_texCoord).r;
       
-      // Blend based on mask - slightly boost mask for more visibility
-      float maskBoost = mask * 1.15; // Boost by 15% for more visibility
-      maskBoost = min(maskBoost, 1.0); // Clamp to 1.0
+      // Blend based on mask with opacity control
+      float maskBoost = mask * 1.15 * u_opacity;
+      maskBoost = min(maskBoost, 1.0);
       vec4 color = mix(portrait, ferrari, maskBoost * (1.0 + u_debug * 0.5));
       gl_FragColor = color;
     }
@@ -233,7 +277,7 @@ export default function PortraitFluidReveal({
         console.warn(
           `[PortraitFluidReveal] Failed to load portrait image: ${frontSrc}`
         );
-        resolve(); // Continue even if image fails
+        resolve();
       };
       portraitImage.src = frontSrc;
     });
@@ -254,15 +298,26 @@ export default function PortraitFluidReveal({
     // Create mask canvas - will be resized properly in resize effect
     const maskCanvas = document.createElement("canvas");
     const container = containerRef.current;
+    // Cap DPR to 1.5 for performance
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     if (container) {
       const rect = container.getBoundingClientRect();
-      maskCanvas.width = rect.width * window.devicePixelRatio || 800;
-      maskCanvas.height = rect.height * window.devicePixelRatio || 1000;
+      maskCanvas.width = rect.width * dpr;
+      maskCanvas.height = rect.height * dpr;
     } else {
       maskCanvas.width = canvas.width || 800;
       maskCanvas.height = canvas.height || 1000;
     }
     maskCanvasRef.current = maskCanvas;
+
+    // Initialize temp canvas for blob rendering (reused per frame)
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = maskCanvas.width;
+    tempCanvas.height = maskCanvas.height;
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCanvasRef.current = tempCanvas;
+    tempCtxRef.current = tempCtx;
+    gradientRef.current = null; // Will be created on first use
 
     const maskTexture = gl.createTexture();
     if (maskTexture) {
@@ -290,7 +345,7 @@ export default function PortraitFluidReveal({
       y: centerY,
       vx: 0,
       vy: 0,
-      radius: 0.22, // Increased from 0.15 for more visibility
+      radius: 0.22,
     }));
   }, [frontSrc, revealSrc, createProgram, loadTexture]);
 
@@ -298,20 +353,28 @@ export default function PortraitFluidReveal({
   const updateMask = useCallback(() => {
     const maskCanvas = maskCanvasRef.current;
     const gl = glRef.current;
-    if (!maskCanvas || !gl || !maskTextureRef.current) return;
+    if (!maskCanvas || !gl || !maskTextureRef.current || !containerRef.current)
+      return;
 
     const ctx = maskCanvas.getContext("2d");
     if (!ctx) return;
 
     const width = maskCanvas.width;
     const height = maskCanvas.height;
+    const containerWidth = containerRef.current.offsetWidth;
+    const containerHeight = containerRef.current.offsetHeight;
 
-    // Clear with fade
-    ctx.fillStyle = "rgba(0, 0, 0, 0.98)";
-    ctx.fillRect(0, 0, width, height);
+    // Use refs for fast-changing values (no React re-renders)
+    const currentMouseX = mouseXRef.current;
+    const currentMouseY = mouseYRef.current;
+    const currentOpacity = maskOpacityRef.current;
 
-    if (!isRevealed && !isHovered) {
-      // Update texture even when not revealed (for fade effect)
+    // Clear mask - fully opaque when not hovered/revealed, fade trail when active
+    if (!isRevealed && !isHovered && currentOpacity === 0) {
+      // Clear fully - reveal disappears immediately
+      ctx.fillStyle = "rgba(0, 0, 0, 1)";
+      ctx.fillRect(0, 0, width, height);
+      // Update texture
       gl.bindTexture(gl.TEXTURE_2D, maskTextureRef.current);
       gl.texImage2D(
         gl.TEXTURE_2D,
@@ -324,61 +387,94 @@ export default function PortraitFluidReveal({
       return;
     }
 
-    // Update blob positions with inertia
-    const targetX =
-      mouseX * (width / (containerRef.current?.offsetWidth || width));
-    const targetY =
-      mouseY * (height / (containerRef.current?.offsetHeight || height));
+    // Clear with fade trail (only while hovered/revealed)
+    ctx.fillStyle = "rgba(0, 0, 0, 0.98)";
+    ctx.fillRect(0, 0, width, height);
 
+    // Convert container-relative coordinates to canvas coordinates
+    const scaleX = width / containerWidth;
+    const scaleY = height / containerHeight;
+
+    // Clamp mouse position to container bounds (using refs)
+    const clampedX = clamp(currentMouseX, 0, containerWidth);
+    const clampedY = clamp(currentMouseY, 0, containerHeight);
+
+    // Convert to canvas coordinates
+    const targetX = clampedX * scaleX;
+    const targetY = clampedY * scaleY;
+
+    // Clamp target position so blobs don't go outside canvas (account for blob radius)
+    const blobRadiusPx = 50 * 1.8; // Approximate blob radius in pixels
+    const clampedTargetX = clamp(targetX, blobRadiusPx, width - blobRadiusPx);
+    const clampedTargetY = clamp(targetY, blobRadiusPx, height - blobRadiusPx);
+
+    // Update blob positions with spring physics
     blobsRef.current.forEach((blob, i) => {
       const offsetX = Math.sin(i * 1.5) * 30;
       const offsetY = Math.cos(i * 1.5) * 30;
 
-      const targetBlobX = targetX + offsetX;
-      const targetBlobY = targetY + offsetY;
+      const targetBlobX = clampedTargetX + offsetX;
+      const targetBlobY = clampedTargetY + offsetY;
 
       if (prefersReducedMotion) {
         blob.x = targetBlobX;
         blob.y = targetBlobY;
+        blob.vx = 0;
+        blob.vy = 0;
       } else {
-        // Smooth interpolation with inertia
-        blob.vx += (targetBlobX - blob.x) * 0.05;
-        blob.vy += (targetBlobY - blob.y) * 0.05;
-        blob.vx *= 0.85; // Damping
-        blob.vy *= 0.85;
+        // Spring physics: F = -kx - cv
+        const dx = targetBlobX - blob.x;
+        const dy = targetBlobY - blob.y;
+        const forceX = (STIFFNESS / 1000) * dx - (DAMPING / 100) * blob.vx;
+        const forceY = (STIFFNESS / 1000) * dy - (DAMPING / 100) * blob.vy;
+
+        blob.vx += forceX * 0.016; // ~60fps
+        blob.vy += forceY * 0.016;
+        blob.vx *= 0.9; // Reduced damping for tighter tracking (was 0.85)
+        blob.vy *= 0.9;
         blob.x += blob.vx;
         blob.y += blob.vy;
       }
     });
 
-    // Draw metaballs (fluid blobs) - create temporary canvas for blur
-    const tempCanvas = document.createElement("canvas");
-    tempCanvas.width = width;
-    tempCanvas.height = height;
-    const tempCtx = tempCanvas.getContext("2d");
-    if (!tempCtx) return;
+    // Draw metaballs (fluid blobs) - use cached temp canvas
+    const tempCanvas = tempCanvasRef.current;
+    const tempCtx = tempCtxRef.current;
+    if (!tempCanvas || !tempCtx) return;
 
-    const gradient = tempCtx.createRadialGradient(0, 0, 0, 0, 0, 100);
-    gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
-    gradient.addColorStop(0.25, "rgba(255, 255, 255, 0.95)");
-    gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.75)");
-    gradient.addColorStop(0.75, "rgba(255, 255, 255, 0.4)");
-    gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+    // Ensure temp canvas size matches mask canvas
+    if (tempCanvas.width !== width || tempCanvas.height !== height) {
+      tempCanvas.width = width;
+      tempCanvas.height = height;
+      gradientRef.current = null; // Reset gradient when resized
+    }
 
+    // Create gradient once and cache it
+    if (!gradientRef.current) {
+      gradientRef.current = tempCtx.createRadialGradient(0, 0, 0, 0, 0, 100);
+      gradientRef.current.addColorStop(0, "rgba(255, 255, 255, 1)");
+      gradientRef.current.addColorStop(0.25, "rgba(255, 255, 255, 0.95)");
+      gradientRef.current.addColorStop(0.5, "rgba(255, 255, 255, 0.75)");
+      gradientRef.current.addColorStop(0.75, "rgba(255, 255, 255, 0.4)");
+      gradientRef.current.addColorStop(1, "rgba(255, 255, 255, 0)");
+    }
+
+    // Clear temp canvas
+    tempCtx.clearRect(0, 0, width, height);
     tempCtx.globalCompositeOperation = "lighten";
 
     blobsRef.current.forEach((blob) => {
       tempCtx.save();
       tempCtx.translate(blob.x, blob.y);
-      tempCtx.scale(blob.radius * 1.8, blob.radius * 1.8); // Increased from 1.5 to 1.8
-      tempCtx.fillStyle = gradient;
+      tempCtx.scale(blob.radius * 1.8, blob.radius * 1.8);
+      tempCtx.fillStyle = gradientRef.current!;
       tempCtx.beginPath();
-      tempCtx.arc(0, 0, 50, 0, Math.PI * 2); // Increased from 40 to 50
+      tempCtx.arc(0, 0, 50, 0, Math.PI * 2);
       tempCtx.fill();
       tempCtx.restore();
     });
 
-    // Apply blur for soft edges (slightly less blur for more visibility)
+    // Apply blur for soft edges
     ctx.filter = "blur(10px)";
     ctx.globalCompositeOperation = "source-over";
     ctx.drawImage(tempCanvas, 0, 0);
@@ -394,7 +490,10 @@ export default function PortraitFluidReveal({
       gl.UNSIGNED_BYTE,
       maskCanvas
     );
-  }, [isRevealed, isHovered, mouseX, mouseY, prefersReducedMotion]);
+  }, [isRevealed, isHovered, prefersReducedMotion, clamp]);
+
+  // Opacity is now managed via refs - no React state updates needed
+  // Opacity is set immediately in handlers (handleMouseEnter/Leave)
 
   // Render frame
   const render = useCallback(() => {
@@ -404,7 +503,6 @@ export default function PortraitFluidReveal({
       return;
     }
 
-    // Check if buffers exist
     if (
       !positionBufferRef.current ||
       !texCoordBufferRef.current ||
@@ -448,11 +546,42 @@ export default function PortraitFluidReveal({
     const debugLoc = gl.getUniformLocation(program, "u_debug");
     if (debugLoc !== null) gl.uniform1f(debugLoc, DEBUG ? 1.0 : 0.0);
 
+    const opacityLoc = gl.getUniformLocation(program, "u_opacity");
+    if (opacityLoc !== null) gl.uniform1f(opacityLoc, maskOpacityRef.current);
+
+    // Update debug info if DEBUG is enabled
+    if (DEBUG) {
+      const now = performance.now();
+      frameCountRef.current++;
+      if (now - lastFrameTimeRef.current >= 1000) {
+        fpsRef.current = frameCountRef.current;
+        frameCountRef.current = 0;
+        lastFrameTimeRef.current = now;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        const scaleX = maskCanvasRef.current
+          ? maskCanvasRef.current.width /
+            (containerRef.current?.offsetWidth || 1)
+          : 1;
+        const scaleY = maskCanvasRef.current
+          ? maskCanvasRef.current.height /
+            (containerRef.current?.offsetHeight || 1)
+          : 1;
+        setDebugInfo({
+          mouseX: mouseXRef.current,
+          mouseY: mouseYRef.current,
+          canvasX: mouseXRef.current * scaleX,
+          canvasY: mouseYRef.current * scaleY,
+          dpr,
+          fps: fpsRef.current,
+        });
+      }
+    }
+
     // Draw
     gl.drawArrays(gl.TRIANGLES, 0, 6);
 
     // Continue animation loop if hovering or revealed
-    if (isRevealed || isHovered) {
+    if (isRevealed || isHovered || maskOpacityRef.current > 0) {
       rafRef.current = requestAnimationFrame(render);
     } else {
       rafRef.current = null;
@@ -465,9 +594,7 @@ export default function PortraitFluidReveal({
 
     const init = async () => {
       await initWebGL();
-      // Start initial render after textures load
       if (mounted && texturesLoadedRef.current) {
-        // Render once to show portrait
         render();
       }
     };
@@ -485,73 +612,183 @@ export default function PortraitFluidReveal({
 
   // Restart render loop when hover/reveal state changes
   useEffect(() => {
-    if (texturesLoadedRef.current && (isHovered || isRevealed)) {
+    if (
+      texturesLoadedRef.current &&
+      (isHovered || isRevealed || maskOpacityRef.current > 0)
+    ) {
       if (!rafRef.current) {
         render();
       }
     }
   }, [isHovered, isRevealed, render]);
 
-  // Handle mouse move
+  // Handle mouse move - use refs, no state updates
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      setMouseX(e.clientX - rect.left);
-      setMouseY(e.clientY - rect.top);
+      if (!rectRef.current) return;
 
-      if (!rafRef.current) {
+      const coords = getContainerCoords(e.clientX, e.clientY);
+
+      // Clamp coordinates to container bounds (using cached rect)
+      const x = Math.max(0, Math.min(coords.x, rectRef.current.width));
+      const y = Math.max(0, Math.min(coords.y, rectRef.current.height));
+
+      // Update refs directly (no React re-render)
+      mouseXRef.current = x;
+      mouseYRef.current = y;
+
+      // Start render loop if not already running
+      if (!rafRef.current && (isHovered || isRevealed)) {
         render();
       }
     },
-    [render]
+    [getContainerCoords, render, isHovered, isRevealed]
   );
 
-  // Handle hover enter
-  const handleMouseEnter = useCallback(() => {
-    setIsHovered(true);
-    render();
-  }, [render]);
+  // Handle hover enter - initialize mask to cursor position
+  const handleMouseEnter = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!containerRef.current || !maskCanvasRef.current) return;
 
-  // Handle hover leave
+      // Update cached rect
+      updateRect();
+      if (!rectRef.current) return;
+
+      const coords = getContainerCoords(e.clientX, e.clientY);
+
+      // Allow edges: >= 0 and <= width/height
+      const x = Math.max(0, Math.min(coords.x, rectRef.current.width));
+      const y = Math.max(0, Math.min(coords.y, rectRef.current.height));
+
+      // Update refs directly (no React re-render)
+      mouseXRef.current = x;
+      mouseYRef.current = y;
+      maskOpacityRef.current = 1; // Set opacity to 1 immediately
+      setIsHovered(true);
+
+      // Snap blobs to entry point immediately (scaled to mask canvas)
+      const maskCanvas = maskCanvasRef.current;
+      const scaleX = maskCanvas.width / rectRef.current.width;
+      const scaleY = maskCanvas.height / rectRef.current.height;
+      const tx = x * scaleX;
+      const ty = y * scaleY;
+
+      blobsRef.current.forEach((blob) => {
+        blob.x = tx;
+        blob.y = ty;
+        blob.vx = 0;
+        blob.vy = 0;
+      });
+    },
+    [getContainerCoords, updateRect]
+  );
+
+  // Handle hover leave - immediate clear
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
+    maskOpacityRef.current = 0; // Set opacity to 0 immediately (ref, no re-render)
+    // Clear mask will happen in next updateMask() call
   }, []);
 
-  // Handle touch move
+  // Handle touch move - use refs, no state updates
   const handleTouchMove = useCallback(
     (e: React.TouchEvent<HTMLDivElement>) => {
       e.preventDefault();
-      if (!containerRef.current || e.touches.length === 0) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const touch = e.touches[0];
-      setMouseX(touch.clientX - rect.left);
-      setMouseY(touch.clientY - rect.top);
+      if (e.touches.length === 0 || !rectRef.current) return;
 
-      if (!rafRef.current) {
+      const touch = e.touches[0];
+      const coords = getContainerCoords(touch.clientX, touch.clientY);
+
+      // Clamp coordinates to container bounds (using cached rect)
+      const x = Math.max(0, Math.min(coords.x, rectRef.current.width));
+      const y = Math.max(0, Math.min(coords.y, rectRef.current.height));
+
+      // Update refs directly (no React re-render)
+      mouseXRef.current = x;
+      mouseYRef.current = y;
+
+      // Start render loop if not already running
+      if (!rafRef.current && (isHovered || isRevealed)) {
         render();
       }
     },
-    [render]
+    [getContainerCoords, render, isHovered, isRevealed]
   );
 
-  // Handle touch start
+  // Handle touch start - activate reveal at touch point
   const handleTouchStart = useCallback(
     (e: React.TouchEvent<HTMLDivElement>) => {
-      if (e.touches.length > 0) {
-        const touch = e.touches[0];
-        if (!containerRef.current) return;
-        const rect = containerRef.current.getBoundingClientRect();
-        setMouseX(touch.clientX - rect.left);
-        setMouseY(touch.clientY - rect.top);
-      }
+      if (
+        e.touches.length === 0 ||
+        !containerRef.current ||
+        !maskCanvasRef.current
+      )
+        return;
+
+      // Update cached rect
+      updateRect();
+      if (!rectRef.current) return;
+
+      const touch = e.touches[0];
+      const coords = getContainerCoords(touch.clientX, touch.clientY);
+
+      // Allow edges: >= 0 and <= width/height
+      const x = Math.max(0, Math.min(coords.x, rectRef.current.width));
+      const y = Math.max(0, Math.min(coords.y, rectRef.current.height));
+
+      // Update refs directly (no React re-render)
+      mouseXRef.current = x;
+      mouseYRef.current = y;
+      maskOpacityRef.current = 1; // Set opacity to 1 immediately
+      setIsRevealed(true);
+
+      // Snap blobs to touch point immediately (scaled to mask canvas)
+      const maskCanvas = maskCanvasRef.current;
+      const scaleX = maskCanvas.width / rectRef.current.width;
+      const scaleY = maskCanvas.height / rectRef.current.height;
+      const tx = x * scaleX;
+      const ty = y * scaleY;
+
+      blobsRef.current.forEach((blob) => {
+        blob.x = tx;
+        blob.y = ty;
+        blob.vx = 0;
+        blob.vy = 0;
+      });
     },
-    []
+    [getContainerCoords, updateRect]
   );
 
-  // Handle touch end - toggle reveal
+  // Handle touch end - tap to reveal toggle with auto-fade
   const handleTouchEnd = useCallback(() => {
-    setIsRevealed((prev) => !prev);
+    // Clear any existing timeout
+    if (touchTimeoutRef.current !== null) {
+      clearTimeout(touchTimeoutRef.current);
+      touchTimeoutRef.current = null;
+    }
+
+    // Toggle reveal state
+    setIsRevealed((prev) => {
+      if (prev) {
+        // If already revealed, hide after 1.2s
+        touchTimeoutRef.current = window.setTimeout(() => {
+          setIsRevealed(false);
+        }, 1200);
+        return prev;
+      } else {
+        // If not revealed, show it
+        return true;
+      }
+    });
+  }, []);
+
+  // Cleanup touch timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (touchTimeoutRef.current !== null) {
+        clearTimeout(touchTimeoutRef.current);
+      }
+    };
   }, []);
 
   // Resize canvas
@@ -564,7 +801,11 @@ export default function PortraitFluidReveal({
       const rect = container.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) return;
 
-      const dpr = window.devicePixelRatio || 1;
+      // Update cached rect
+      rectRef.current = rect;
+
+      // Cap DPR to 1.5 for performance
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       canvas.style.width = `${rect.width}px`;
@@ -579,12 +820,21 @@ export default function PortraitFluidReveal({
         maskCanvasRef.current.width = canvas.width;
         maskCanvasRef.current.height = canvas.height;
 
+        // Resize temp canvas to match
+        if (tempCanvasRef.current) {
+          tempCanvasRef.current.width = canvas.width;
+          tempCanvasRef.current.height = canvas.height;
+          gradientRef.current = null; // Reset gradient when resized
+        }
+
         // Update blob positions to center when resized
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
         blobsRef.current.forEach((blob) => {
           blob.x = centerX;
           blob.y = centerY;
+          blob.vx = 0;
+          blob.vy = 0;
         });
 
         // Re-initialize mask texture if WebGL is ready
@@ -609,11 +859,10 @@ export default function PortraitFluidReveal({
       }
     };
 
-    // Use ResizeObserver for better performance
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
 
-    resize(); // Initial resize
+    resize();
 
     window.addEventListener("resize", resize);
     return () => {
@@ -623,13 +872,21 @@ export default function PortraitFluidReveal({
   }, [render]);
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       {DEBUG && (
         <div
-          className="absolute top-4 left-4 px-3 py-1 rounded text-xs font-bold z-50"
-          style={{ backgroundColor: "#DC2626", color: "#FFFFFF" }}
+          className="absolute top-2 left-2 px-2 py-1 rounded text-xs font-mono z-50 bg-black bg-opacity-80 text-white"
+          style={{ fontSize: "10px", lineHeight: "1.4" }}
         >
-          FLUID REVEAL ON
+          <div>
+            mouse: {debugInfo.mouseX.toFixed(1)}, {debugInfo.mouseY.toFixed(1)}
+          </div>
+          <div>
+            canvas: {debugInfo.canvasX.toFixed(1)},{" "}
+            {debugInfo.canvasY.toFixed(1)}
+          </div>
+          <div>dpr: {debugInfo.dpr}</div>
+          <div>fps: {debugInfo.fps}</div>
         </div>
       )}
       <div
@@ -637,7 +894,7 @@ export default function PortraitFluidReveal({
         className="relative rounded-2xl overflow-hidden border"
         style={{
           borderColor: "rgba(220, 38, 38, 0.3)",
-          aspectRatio: imageAspectRatio ? `${imageAspectRatio}` : "4/5", // Fallback to 4/5 if aspect ratio not loaded yet
+          aspectRatio: imageAspectRatio ? `${imageAspectRatio}` : "4/5",
         }}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
@@ -653,12 +910,13 @@ export default function PortraitFluidReveal({
         />
       </div>
 
-      {/* Hint text (desktop only) */}
+      {/* Hint text */}
       <p
-        className="text-xs text-center mt-2 opacity-60 hidden md:block transition-opacity"
+        className="text-xs text-center mt-2 opacity-60 transition-opacity"
         style={{ color: "#9CA3AF" }}
       >
-        Hover to reveal
+        <span className="hidden md:inline">Hover to reveal</span>
+        <span className="md:hidden">Tap to reveal</span>
       </p>
     </div>
   );
