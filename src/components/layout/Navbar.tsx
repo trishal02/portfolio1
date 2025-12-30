@@ -13,7 +13,7 @@ interface NavbarProps {
 
 export default function Navbar({ items, quote }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState("home");
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -37,16 +37,14 @@ export default function Navbar({ items, quote }: NavbarProps) {
   useEffect(() => {
     const handleScroll = () => {
       const sections = items.map((item) => item.href.substring(1));
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + 150;
 
-      for (const section of sections) {
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
         const element = document.getElementById(section);
         if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + offsetHeight
-          ) {
+          const { offsetTop } = element;
+          if (scrollPosition >= offsetTop) {
             setActiveSection(section);
             break;
           }
@@ -69,7 +67,7 @@ export default function Navbar({ items, quote }: NavbarProps) {
 
   return (
     <header 
-      className="fixed top-0 left-0 right-0 z-50 carbon-fiber border-b pit-wall-border"
+      className="fixed top-0 left-0 right-0 z-50 carbon-fiber border-b pit-wall-border backdrop-blur-sm"
       style={{ borderBottomColor: "rgba(220, 38, 38, 0.3)" }}
     >
       <nav className="flex items-center justify-between max-w-screen-2xl mx-auto px-6 py-4">
@@ -114,7 +112,11 @@ export default function Navbar({ items, quote }: NavbarProps) {
                     className={`block text-base md:text-lg font-display font-bold tracking-wider py-2 px-2 cursor-pointer transition-all duration-300 ${
                       isActive ? "glow-red" : ""
                     }`}
-                    style={{ color: isActive ? "#DC2626" : "#FFFFFF" }}
+                    style={{ 
+                      color: isActive ? "#DC2626" : "#FFFFFF",
+                      borderLeft: isActive ? "3px solid #DC2626" : "3px solid transparent",
+                      paddingLeft: isActive ? "0.5rem" : "0.5rem",
+                    }}
                     onClick={(e) => {
                       e.preventDefault();
                       handleNavClick(item.href);

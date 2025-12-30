@@ -54,7 +54,7 @@ export default function Contact({ email, phone, location }: ContactProps) {
             <Button
               variant="primary"
               onClick={() => {
-                window.open("https://linkedin.com", "_blank");
+                window.open("https://www.linkedin.com/in/thrishalreddy-i-4089a8207/", "_blank");
               }}
               className="flex items-center gap-2"
             >
@@ -64,7 +64,7 @@ export default function Contact({ email, phone, location }: ContactProps) {
             <Button
               variant="outline"
               onClick={() => {
-                window.open("https://github.com", "_blank");
+                window.open("https://github.com/trishal02", "_blank");
               }}
               className="flex items-center gap-2"
             >

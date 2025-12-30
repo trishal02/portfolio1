@@ -1,34 +1,17 @@
 import { ChevronDown, Download, Mail } from "lucide-react";
-import Button from "../ui/Button";
 import BlurText from "../BlurText";
 
 interface HeroProps {
   firstName: string;
   lastName: string;
   tagline: string;
-  resumeUrl?: string;
 }
 
 export default function Hero({
   firstName,
   lastName,
   tagline,
-  resumeUrl = "/Trishal_Reddy_Indireddy_2.pdf",
 }: HeroProps) {
-  const handleDownloadResume = () => {
-    const link = document.createElement("a");
-    link.href = resumeUrl;
-    link.download = "Trishal_Reddy_Indireddy_Resume.pdf";
-    link.click();
-  };
-
-  const handleContact = () => {
-    const contactSection = document.querySelector("#contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <section
       id="home"
@@ -70,22 +53,35 @@ export default function Hero({
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button
-            variant="primary"
-            onClick={handleDownloadResume}
-            className="flex items-center gap-2"
+          {/* Download Resume Button - Primary */}
+          <a
+            href="/resume.pdf"
+            download="Trishal_Reddy_Indireddy_Resume.pdf"
+            className="px-8 py-4 font-display font-semibold uppercase tracking-wider transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 hover:opacity-90 hover:scale-105 flex items-center gap-2 shadow-lg"
+            style={{
+              backgroundColor: "#DC2626",
+              color: "#FFFFFF",
+            }}
+            aria-label="Download Trishal Reddy Indireddy Resume PDF"
           >
             <Download className="w-5 h-5" />
             Download Resume
-          </Button>
-          <Button
-            variant="outline"
-            onClick={handleContact}
-            className="flex items-center gap-2"
+          </a>
+
+          {/* Connect Button - Secondary */}
+          <a
+            href="#contact"
+            className="px-8 py-4 font-display font-semibold uppercase tracking-wider transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 hover:opacity-90 hover:scale-105 flex items-center gap-2"
+            style={{
+              backgroundColor: "transparent",
+              color: "#DC2626",
+              border: "2px solid #DC2626",
+            }}
+            aria-label="Scroll to Contact section"
           >
             <Mail className="w-5 h-5" />
-            Contact Me
-          </Button>
+            Connect
+          </a>
         </div>
       </div>
 

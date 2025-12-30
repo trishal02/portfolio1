@@ -11,6 +11,9 @@ export interface Project {
   description: string;
   tech: string;
   points: string[];
+  github?: string;
+  demo?: string;
+  impact?: string;
 }
 
 export interface Education {
@@ -37,6 +40,9 @@ export const profileData = {
     email: "tindireddy@binghamton.edu",
     phone: "+1-607-232-1218",
     location: "Binghamton, NY",
+    linkedin: "https://www.linkedin.com/in/thrishalreddy-i-4089a8207/",
+    github: "https://github.com/trishal02",
+    resume: "/resume.pdf",
   },
   experience: [
     {
@@ -78,8 +84,8 @@ export const profileData = {
       description:
         "Developed a data pipeline to collect election discussions from Reddit and 4chan.",
       tech: "Python, PostgreSQL, OAuth, Data Pipeline",
+      impact: "Designed scalable PostgreSQL architecture achieving 90%+ uptime with 127K+ Reddit posts daily.",
       points: [
-        "Designed scalable PostgreSQL architecture achieving 90%+ uptime with 127K+ Reddit posts daily.",
         "Tackled API limitations and dynamic data filtering for continuous data flow.",
       ],
     },
@@ -89,11 +95,11 @@ export const profileData = {
       description:
         "Conducted an in-depth analysis of SQL Injection and Cross-Site Scripting (XSS) vulnerabilities.",
       tech: "Linux, Virtual Machines, Machine Learning, Naive Bayes, Python",
+      impact: "Implemented machine learning based detection for SQL Injection, achieving 91.6% accuracy using Naive Bayes classification.",
       points: [
         "Designed a virtualized attack environment using Linux-based Virtual Machines to demonstrate real-world exploitation.",
         "Developed and tested SQL Injection methods to bypass authentication and compromise web applications.",
         "Investigated XSS attacks, identifying security flaws that allow malicious script injection.",
-        "Implemented machine learning based detection for SQL Injection, achieving 91.6% accuracy using Naive Bayes classification.",
         "Proposed and evaluated defensive strategies including input validation, output encoding, and Content Security Policies (CSP) to mitigate web security threats.",
       ],
     },
@@ -103,8 +109,8 @@ export const profileData = {
       description:
         "Predictive analytics system using PySpark to forecast crime patterns.",
       tech: "PySpark, LSTM, Prophet, Pandas",
+      impact: "Forecasted crime patterns and identified high-risk areas using distributed Spark clusters.",
       points: [
-        "Forecasted crime patterns and identified high-risk areas using distributed Spark clusters.",
         "Engineered a scalable data processing pipeline to generate crime hotspot visualizations for law enforcement.",
       ],
     },
@@ -114,8 +120,8 @@ export const profileData = {
       description:
         "Designed a web application to manage all transactions performed by a user to analyze spending patterns and manage expenditures.",
       tech: "HTML, CSS, JavaScript, Material-UI, React.js, Firebase",
+      impact: "Implemented a special feature allowing users to log transactions using audio inputs.",
       points: [
-        "Implemented a special feature allowing users to log transactions using audio inputs.",
         "Methodology: Powered by Speechly to capture and process input.",
       ],
     },
@@ -171,4 +177,3 @@ export const profileData = {
     },
   ] as Extracurricular[],
 };
-
