@@ -18,7 +18,8 @@ import ProjectsGrid from "./components/sections/ProjectsGrid";
 import StartupsGrid from "./components/sections/StartupsGrid";
 import Education from "./components/sections/Education";
 import Skills from "./components/sections/Skills";
-import Extracurriculars from "./components/sections/Extracurriculars";
+import ExtracurricularGrid from "./components/sections/ExtracurricularGrid";
+import LeadershipGrid from "./components/sections/LeadershipGrid";
 import Contact from "./components/sections/Contact";
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
     { label: "STARTUPS", href: "#startups" },
     { label: "PROJECTS", href: "#projects" },
     { label: "SKILLS", href: "#skills" },
+    { label: "LEADERSHIP", href: "#leadership" },
     { label: "EXTRACURRICULARS", href: "#extracurriculars" },
     { label: "CONTACT", href: "#contact" },
   ];
@@ -87,7 +89,8 @@ export default function App() {
         <StartupsGrid startups={profileData.startups} />
         <ProjectsGrid projects={profileData.projects} />
         <Skills />
-        <Extracurriculars extracurriculars={profileData.extracurriculars} />
+        <LeadershipGrid />
+        <ExtracurricularGrid />
         <Contact
           email={profileData.contact.email}
           phone={profileData.contact.phone}
