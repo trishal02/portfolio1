@@ -1,13 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Section from "../layout/Section";
 import { extracurricularItems } from "../../data/extracurriculars";
 
+// Map activities to emojis
+const activityEmojis: Record<string, string> = {
+  Cricket: "🏏",
+  Badminton: "🏸",
+  Fitness: "💪",
+  Camping: "🏕️",
+  "Problem Solving": "🧩",
+  Coding: "💻",
+  "Cloud & Infrastructure": "☁️",
+  "Tech Talks": "🎤",
+  "F1 Racing": "🏎️",
+};
+
 export default function ExtracurricularGrid() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [currentEmojiIndex, setCurrentEmojiIndex] = useState(0);
   const prefersReducedMotion =
     typeof window !== "undefined"
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
+
+  // Get unique emojis from activities
+  const emojis = Array.from(
+    new Set(
+      extracurricularItems.map((item) => activityEmojis[item.name] || "✨")
+    )
+  );
+
+  // Cycle through emojis every 0.1 seconds
+  useEffect(() => {
+    if (prefersReducedMotion || emojis.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentEmojiIndex((prev) => (prev + 1) % emojis.length);
+    }, 100); // 0.1 seconds
+
+    return () => clearInterval(interval);
+  }, [emojis.length, prefersReducedMotion]);
 
   const handleTileClick = (index: number) => {
     // Toggle overlay on mobile/tap
@@ -24,11 +56,32 @@ export default function ExtracurricularGrid() {
   };
 
   return (
-    <Section
-      id="extracurriculars"
-      title="What's Up"
-      className="max-w-7xl mx-auto"
-    >
+    <Section id="extracurriculars" title="" className="max-w-7xl mx-auto">
+      {/* Custom Title with Animated Emoji */}
+      <div className="mb-16 text-center">
+        <div className="flex justify-center items-center gap-3 md:gap-4">
+          <h2
+            id="extracurriculars-title"
+            className="text-sm font-display font-bold tracking-[0.2em] uppercase"
+            style={{ color: "#DC2626" }}
+          >
+            What's Up
+          </h2>
+          {/* Animated Emoji - Only one visible at a time */}
+          <span
+            key={currentEmojiIndex}
+            className="inline-block text-2xl md:text-3xl transition-opacity duration-200"
+            style={{
+              animation: prefersReducedMotion
+                ? "none"
+                : `floatEmoji 3s ease-in-out infinite`,
+            }}
+          >
+            {emojis[currentEmojiIndex]}
+          </span>
+        </div>
+      </div>
+
       {/* Mobile helper text */}
       <p
         className="text-xs text-center mb-8 md:hidden opacity-60"
