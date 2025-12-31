@@ -26,7 +26,7 @@ export const extracurricularItems: ExtraItem[] = [
   },
   {
     name: "Problem Solving",
-    image: "/extras/problem solving.png",
+    image: "/extras/problem-solving.png",
   },
   {
     name: "Coding",
@@ -34,15 +34,15 @@ export const extracurricularItems: ExtraItem[] = [
   },
   {
     name: "Cloud & Infrastructure",
-    image: "/extras/cloud:infra.png",
+    image: "/extras/cloud-infra.png",
   },
   {
     name: "Tech Talks",
-    image: "/extras/tech talks.png",
+    image: "/extras/tech-talks.png",
   },
   {
     name: "F1 Racing",
-    image: "/extras/watching_f1.png",
+    image: "/extras/watching-f1.png",
     caption: "Formula 1 Enthusiast",
   },
 ];

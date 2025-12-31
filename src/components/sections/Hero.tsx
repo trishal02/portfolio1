@@ -11,7 +11,11 @@ export default function Hero({ firstName, lastName, tagline }: HeroProps) {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20 bg-transparent"
+      style={{
+        zIndex: 10,
+        opacity: 1,
+      }}
     >
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
@@ -23,7 +27,11 @@ export default function Hero({ firstName, lastName, tagline }: HeroProps) {
             animateBy="letters"
             direction="top"
             className="font-display font-black text-[10vw] md:text-[8vw] leading-[0.9] tracking-tighter uppercase justify-center whitespace-nowrap"
-            style={{ color: "#DC2626" }}
+            style={{
+              color: "#DC2626",
+              textShadow:
+                "0 2px 8px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3)",
+            }}
           />
           <BlurText
             text={lastName}
@@ -31,7 +39,11 @@ export default function Hero({ firstName, lastName, tagline }: HeroProps) {
             animateBy="letters"
             direction="top"
             className="font-display font-black text-[10vw] md:text-[8vw] leading-[0.9] tracking-tighter uppercase justify-center whitespace-nowrap"
-            style={{ color: "#DC2626" }}
+            style={{
+              color: "#DC2626",
+              textShadow:
+                "0 2px 8px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3)",
+            }}
           />
         </div>
 
@@ -43,7 +55,11 @@ export default function Hero({ firstName, lastName, tagline }: HeroProps) {
             animateBy="words"
             direction="bottom"
             className="text-lg md:text-2xl font-body font-light tracking-widest uppercase"
-            style={{ color: "#9CA3AF" }}
+            style={{
+              color: "#9CA3AF",
+              textShadow:
+                "0 1px 4px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2)",
+            }}
           />
         </div>
 
