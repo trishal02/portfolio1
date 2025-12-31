@@ -68,9 +68,17 @@ function StartupCard({ startup, isFeatured = false }: StartupCardProps) {
             >
               {startup.title}
             </h3>
+            <Badge variant="hard" className="text-xs">
+              Startup
+            </Badge>
             {isFeatured && (
               <Badge variant="hard" className="text-xs">
                 Featured
+              </Badge>
+            )}
+            {startup.title.includes("AEGIS") && (
+              <Badge variant="default" className="text-xs">
+                MIT License
               </Badge>
             )}
           </div>

@@ -83,6 +83,20 @@ Outside of code, I'm a national-level wrestling athlete — which shows up in ho
   ] as Experience[],
   startups: [
     {
+      title: "🛡️ AEGIS",
+      period: "2025 - Present",
+      description:
+        "The Fortress for Your Data — privacy-preserving infrastructure for the AI era. AEGIS is an enterprise-grade, zero-trust infrastructure for secure data storage on untrusted devices and Federated Learning workflows. It bridges Python/PyTorch research with a hardened Rust core for verified security and performance.",
+      tech: "Rust, Python, AES-256-GCM, PyO3 (planned), Federated Learning, Differential Privacy, Zero-Trust, Security",
+      points: [
+        "Rust \"Secure Vault Engine\": streaming AES-256-GCM encryption for large datasets with constant RAM usage",
+        "Crypto-shredding: deleting keys makes data unrecoverable",
+        "Sanitized storage: UUID-based physical storage + encrypted metadata to reduce traversal risk",
+        "Federated learning support: local training + differential privacy + policy checks (GDPR/CCPA)",
+      ],
+      github: "https://github.com/Lingikaushikreddy/Aegis",
+    },
+    {
       title: "Thrill AI | Voice Intelligence",
       period: "2024 - Present",
       description:
