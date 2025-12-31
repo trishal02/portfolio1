@@ -103,6 +103,21 @@ Outside of code, I'm a national-level wrestling athlete — which shows up in ho
   ] as Project[],
   projects: [
     {
+      title: "Event-Driven Case Routing Prototype",
+      period: "2025",
+      description:
+        "Built a small event-streaming workflow using Kafka to produce case events, consume them, and route them to downstream handlers. Implemented safe reprocessing using retries + idempotency, and documented topic contracts + local run steps.",
+      tech: "Kafka, TypeScript, REST API, Event-Driven, Idempotency, Testing",
+      points: [
+        "Kafka event pipeline: produce → consume → route to handlers",
+        "TypeScript REST service to publish events",
+        "Retries + idempotent handling for safe reprocessing",
+        "Basic integration tests + documentation (setup, topics, local run)",
+      ],
+      // github: "https://github.com/username/repo", // TODO: Add GitHub link when available
+      // demo: "https://demo-url.com", // TODO: Add demo link when available
+    },
+    {
       title: "Social Media Election Analysis Platform",
       period: "Sep 2024 - Dec 2024",
       description:
