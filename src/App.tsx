@@ -103,19 +103,6 @@ export default function App() {
 
       <Footer />
       </div>
-
-      {/* DEBUG: Confirms new background path is active. Remove after verification. */}
-      <div
-        className="fixed bottom-3 right-3 px-2 py-1 rounded font-mono text-xs pointer-events-none"
-        style={{
-          zIndex: 9999,
-          opacity: 0.7,
-          color: "rgba(34, 197, 94, 0.95)",
-          backgroundColor: "rgba(0,0,0,0.6)",
-        }}
-      >
-        FAST BG ACTIVE
-      </div>
     </div>
   );
 }

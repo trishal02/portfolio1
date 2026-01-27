@@ -71,19 +71,6 @@ export default function FastF1Background() {
           backgroundRepeat: "repeat",
         }}
       />
-
-      {/* DEBUG WATERMARK — Remove this block after verifying FastF1Background is visible (search "DEBUG WATERMARK" in this file). */}
-      <div
-        className="fixed bottom-3 right-3 px-2 py-1 rounded font-mono text-xs pointer-events-none"
-        style={{
-          zIndex: 9998,
-          opacity: 0.6,
-          color: "rgba(34, 197, 94, 0.95)",
-          backgroundColor: "rgba(0,0,0,0.5)",
-        }}
-      >
-        FAST BG ACTIVE
-      </div>
     </div>
   );
 }
