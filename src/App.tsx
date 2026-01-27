@@ -1,3 +1,10 @@
+/**
+ * App — Single entry layout.
+ * Audit: Only one background is mounted: <BackgroundManager />.
+ * Do NOT import or mount: BackgroundAnimation, AuroraBackground, CarsBackground,
+ * TelemetrySuzukaBackground, F1Background, SuzukaCircuitBackground, CircuitMapBackground,
+ * HudTelemetryBackground, CheckeredMoiré.
+ */
 import { useEffect, useState } from "react";
 import { profileData } from "./data/profile";
 import Navbar from "./components/layout/Navbar";
@@ -58,11 +65,14 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen relative overflow-x-hidden bg-transparent"
+      className="min-h-screen overflow-x-hidden bg-transparent"
       style={{ color: "var(--white)" }}
     >
-      <BackgroundManager mode={perfToMode(perfPref)} variant="aurora" />
+      {/* ONLY one background: BackgroundManager at z-0 (no transform/filter on root so stacking works). */}
+      <BackgroundManager mode={perfToMode(perfPref)} variant="fast" />
 
+      {/* Content wrapper: z-10 so it stacks above BackgroundManager (z-0). No full-screen opaque bg here. */}
+      <div className="relative z-10">
       <Navbar
         items={menuItems}
         quote={profileData.quote}
@@ -70,7 +80,7 @@ export default function App() {
         onPerformancePrefChange={setAndPersistPerf}
       />
 
-      <main className="relative z-0">
+      <main className="relative">
         <Hero
           firstName={profileData.name.first}
           lastName={profileData.name.last}
@@ -92,6 +102,20 @@ export default function App() {
       </main>
 
       <Footer />
+      </div>
+
+      {/* DEBUG: Confirms new background path is active. Remove after verification. */}
+      <div
+        className="fixed bottom-3 right-3 px-2 py-1 rounded font-mono text-xs pointer-events-none"
+        style={{
+          zIndex: 9999,
+          opacity: 0.7,
+          color: "rgba(34, 197, 94, 0.95)",
+          backgroundColor: "rgba(0,0,0,0.6)",
+        }}
+      >
+        FAST BG ACTIVE
+      </div>
     </div>
   );
 }

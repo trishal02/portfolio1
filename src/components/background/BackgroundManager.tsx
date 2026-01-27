@@ -7,6 +7,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { useReducedMotion } from "framer-motion";
 
 // Lazy-loaded or static imports for backgrounds (single active at a time)
+import FastF1Background from "../backgrounds/FastF1Background";
 import AuroraBackground from "../AuroraBackground";
 import CarsBackground from "../backgrounds/CarsBackground";
 import F1Background from "./F1Background";
@@ -15,6 +16,7 @@ import SuzukaCircuitBackground from "../backgrounds/SuzukaCircuitBackground";
 
 export type BackgroundMode = "auto" | "static" | "light" | "full";
 export type BackgroundVariant =
+  | "fast"
   | "aurora"
   | "telemetry"
   | "cars"
@@ -33,25 +35,8 @@ const AUTO_MAX_LEVEL: BackgroundMode = "light";
 
 export interface BackgroundManagerProps {
   mode?: BackgroundMode;
+  /** Default "fast" uses FastF1Background in full mode; cinematic options: aurora, telemetry, cars, f1, circuit. */
   variant?: BackgroundVariant;
-}
-
-/** Static fallback: single div, CSS gradients only. No blur, filters, SVG, or Framer Motion. */
-function StaticBackground() {
-  return (
-    <div
-      className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-slate-950"
-      aria-hidden="true"
-      style={{
-        background: `
-          radial-gradient(ellipse 80% 50% at 50% 0%, rgba(30, 27, 75, 0.4), transparent),
-          radial-gradient(ellipse 60% 40% at 80% 60%, rgba(59, 130, 246, 0.12), transparent),
-          radial-gradient(ellipse 50% 30% at 20% 80%, rgba(139, 92, 246, 0.1), transparent),
-          linear-gradient(180deg, #0f172a 0%, #020617 100%)
-        `,
-      }}
-    />
-  );
 }
 
 function useDeviceLowPower(): boolean {
@@ -152,7 +137,7 @@ function useAutoEffectiveMode(
 
 export default function BackgroundManager({
   mode = "auto",
-  variant = "aurora",
+  variant = "fast",
 }: BackgroundManagerProps) {
   const shouldReduceMotion = useReducedMotion();
   const reduceMotion = Boolean(shouldReduceMotion);
@@ -171,19 +156,19 @@ export default function BackgroundManager({
   const effectiveMode: BackgroundMode =
     mode === "auto" ? effectiveAutoMode : mode;
 
+  console.log("[BackgroundManager] render", { effectiveMode, variant, mode });
+
   // Resolve which single background to show
   const content = useMemo(() => {
-    if (effectiveMode === "static" || variant === "off") {
-      return <StaticBackground />;
+    // Static and light modes: always use lightweight FastF1Background (pure CSS, no blur/filters)
+    if (effectiveMode === "static" || effectiveMode === "light" || variant === "off") {
+      return <FastF1Background />;
     }
 
-    if (effectiveMode === "light") {
-      // Light: exactly one of Aurora or Checkered (no heavy blur/filters)
-      return <AuroraBackground lightMode />;
-    }
-
-    // full: one cinematic background by variant
+    // full: default variant "fast" uses FastF1Background; other variants are cinematic
     switch (variant) {
+      case "fast":
+        return <FastF1Background />;
       case "aurora":
         return <AuroraBackground />;
       case "telemetry":
@@ -195,12 +180,12 @@ export default function BackgroundManager({
       case "circuit":
         return <SuzukaCircuitBackground />;
       default:
-        return <AuroraBackground />;
+        return <FastF1Background />;
     }
   }, [effectiveMode, variant]);
 
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
       {content}
     </div>
   );
