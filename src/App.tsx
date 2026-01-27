@@ -1,16 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { profileData } from "./data/profile";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-import F1Background from "./components/background/F1Background";
-import BackgroundAnimation from "./components/BackgroundAnimation";
-import AuroraBackground from "./components/AuroraBackground";
-import CheckeredMoiré from "./components/backgrounds/CheckeredMoiré";
-import TelemetrySuzukaBackground from "./components/backgrounds/TelemetrySuzukaBackground";
-import HudTelemetryBackground from "./components/backgrounds/HudTelemetryBackground";
-import CircuitMapBackground from "./components/backgrounds/CircuitMapBackground";
-import SuzukaCircuitBackground from "./components/backgrounds/SuzukaCircuitBackground";
-import CarsBackground from "./components/backgrounds/CarsBackground";
+import BackgroundManager from "./components/background/BackgroundManager";
+import type { BackgroundMode } from "./components/background/BackgroundManager";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
 import ExperienceTimeline from "./components/sections/ExperienceTimeline";
@@ -22,11 +15,33 @@ import ExtracurricularGrid from "./components/sections/ExtracurricularGrid";
 import LeadershipGrid from "./components/sections/LeadershipGrid";
 import Contact from "./components/sections/Contact";
 
+const STORAGE_KEY = "trishal-bg-perf";
+type PerfPref = "off" | "auto" | "low" | "high";
+
+function perfToMode(p: PerfPref): BackgroundMode {
+  if (p === "off") return "static";
+  if (p === "low") return "light";
+  if (p === "high") return "full";
+  return "auto";
+}
+
+function getInitialPerfPref(): PerfPref {
+  if (typeof localStorage === "undefined") return "auto";
+  const stored = localStorage.getItem(STORAGE_KEY) as PerfPref | null;
+  return stored && ["off", "auto", "low", "high"].includes(stored) ? stored : "auto";
+}
+
 export default function App() {
+  const [perfPref, setPerfPref] = useState<PerfPref>(getInitialPerfPref);
+
   useEffect(() => {
-    // Ensure dark mode is always on (F1 theme is dark)
     document.documentElement.classList.add("dark");
   }, []);
+
+  const setAndPersistPerf = (value: PerfPref) => {
+    setPerfPref(value);
+    localStorage.setItem(STORAGE_KEY, value);
+  };
 
   const menuItems = [
     { label: "HOME", href: "#home" },
@@ -46,37 +61,15 @@ export default function App() {
       className="min-h-screen relative overflow-x-hidden bg-transparent"
       style={{ color: "var(--white)" }}
     >
-      {/* Cars Background - Animated cars only (no track) */}
-      <CarsBackground />
+      <BackgroundManager mode={perfToMode(perfPref)} variant="aurora" />
 
-      {/* Suzuka Circuit Background */}
-      <SuzukaCircuitBackground />
+      <Navbar
+        items={menuItems}
+        quote={profileData.quote}
+        performancePref={perfPref}
+        onPerformancePrefChange={setAndPersistPerf}
+      />
 
-      {/* Circuit Map Background */}
-      <CircuitMapBackground />
-
-      {/* HUD Telemetry Background */}
-      <HudTelemetryBackground />
-
-      {/* Telemetry Suzuka Background */}
-      <TelemetrySuzukaBackground />
-
-      {/* Checkered Moiré Background */}
-      <CheckeredMoiré />
-
-      {/* Aurora Background */}
-      <AuroraBackground />
-
-      {/* Aurora Background Animation */}
-      <BackgroundAnimation />
-
-      {/* F1 Background */}
-      <F1Background />
-
-      {/* Navigation */}
-      <Navbar items={menuItems} quote={profileData.quote} />
-
-      {/* Main Content */}
       <main className="relative z-0">
         <Hero
           firstName={profileData.name.first}
@@ -98,7 +91,6 @@ export default function App() {
         />
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

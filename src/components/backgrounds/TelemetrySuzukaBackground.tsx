@@ -1,7 +1,27 @@
 import { motion, useReducedMotion } from "framer-motion";
 
-export default function TelemetrySuzukaBackground() {
+export interface TelemetrySuzukaBackgroundProps {
+  /** When true, enables blur and drop-shadow SVG filters (full mode only). */
+  enableFilters?: boolean;
+}
+
+export default function TelemetrySuzukaBackground({ enableFilters = false }: TelemetrySuzukaBackgroundProps) {
   const shouldReduceMotion = useReducedMotion();
+  const filterStyle = enableFilters
+    ? { filter: "blur(1px) drop-shadow(0 0 3px rgba(34, 197, 94, 0.4))" as const }
+    : undefined;
+  const filterStyle2 = enableFilters
+    ? { filter: "blur(1px) drop-shadow(0 0 3px rgba(239, 68, 68, 0.3))" as const }
+    : undefined;
+  const dotFilter1 = enableFilters
+    ? { filter: "blur(2px) drop-shadow(0 0 8px rgba(34, 197, 94, 0.8))" as const }
+    : undefined;
+  const dotFilter2 = enableFilters
+    ? { filter: "blur(2px) drop-shadow(0 0 8px rgba(239, 68, 68, 0.7))" as const }
+    : undefined;
+  const circuitFilter = enableFilters
+    ? { filter: "blur(2px) drop-shadow(0 0 10px rgba(59, 130, 246, 0.15))" as const, transformOrigin: "center" as const }
+    : { transformOrigin: "center" as const };
 
   // Trace line path data (smooth telemetry-like curves)
   const tracePath1 =
@@ -81,9 +101,7 @@ export default function TelemetrySuzukaBackground() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeDasharray="20 20"
-          style={{
-            filter: "blur(1px) drop-shadow(0 0 3px rgba(34, 197, 94, 0.4))",
-          }}
+          style={filterStyle}
           animate={
             shouldReduceMotion
               ? {}
@@ -106,9 +124,7 @@ export default function TelemetrySuzukaBackground() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeDasharray="20 20"
-          style={{
-            filter: "blur(1px) drop-shadow(0 0 3px rgba(239, 68, 68, 0.3))",
-          }}
+          style={filterStyle2}
           animate={
             shouldReduceMotion
               ? {}
@@ -128,9 +144,7 @@ export default function TelemetrySuzukaBackground() {
         <motion.circle
           r="4"
           fill="rgba(34, 197, 94, 0.6)"
-          style={{
-            filter: "blur(2px) drop-shadow(0 0 8px rgba(34, 197, 94, 0.8))",
-          }}
+          style={dotFilter1}
           animate={
             shouldReduceMotion
               ? { cx: 0, cy: 300 }
@@ -150,9 +164,7 @@ export default function TelemetrySuzukaBackground() {
         <motion.circle
           r="4"
           fill="rgba(239, 68, 68, 0.5)"
-          style={{
-            filter: "blur(2px) drop-shadow(0 0 8px rgba(239, 68, 68, 0.7))",
-          }}
+          style={dotFilter2}
           animate={
             shouldReduceMotion
               ? { cx: 0, cy: 500 }
@@ -177,10 +189,7 @@ export default function TelemetrySuzukaBackground() {
           strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{
-            filter: "blur(2px) drop-shadow(0 0 10px rgba(59, 130, 246, 0.15))",
-            transformOrigin: "center",
-          }}
+          style={circuitFilter}
           animate={
             shouldReduceMotion
               ? {}

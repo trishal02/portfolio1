@@ -1,38 +1,64 @@
 import { useState, useEffect, useRef } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Gauge } from "lucide-react";
 
 interface NavItem {
   label: string;
   href: string;
 }
 
+export type PerformancePref = "off" | "auto" | "low" | "high";
+
 interface NavbarProps {
   items: NavItem[];
   quote: string;
+  performancePref?: PerformancePref;
+  onPerformancePrefChange?: (value: PerformancePref) => void;
 }
 
-export default function Navbar({ items, quote }: NavbarProps) {
+const PERF_OPTIONS: { value: PerformancePref; label: string }[] = [
+  { value: "off", label: "Off" },
+  { value: "auto", label: "Auto" },
+  { value: "low", label: "Low" },
+  { value: "high", label: "High" },
+];
+
+export default function Navbar({
+  items,
+  quote,
+  performancePref = "auto",
+  onPerformancePrefChange,
+}: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [perfMenuOpen, setPerfMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const perfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
       if (
         isMenuOpen &&
         menuRef.current &&
         buttonRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
-        !buttonRef.current.contains(event.target as Node)
+        !menuRef.current.contains(target) &&
+        !buttonRef.current.contains(target)
       ) {
         setIsMenuOpen(false);
+      }
+      if (
+        perfMenuOpen &&
+        perfRef.current &&
+        !perfRef.current.contains(target)
+      ) {
+        setPerfMenuOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isMenuOpen]);
+  }, [isMenuOpen, perfMenuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -139,8 +165,50 @@ export default function Navbar({ items, quote }: NavbarProps) {
           "{quote}"
         </div>
 
-        {/* Placeholder for symmetry */}
-        <div className="w-10" />
+        {/* Performance toggle: Off / Auto / Low / High */}
+        <div className="relative" ref={perfRef}>
+          <button
+            type="button"
+            className="p-2 rounded transition-colors duration-300 focus:outline-none focus:ring-2 flex items-center gap-1"
+            style={{ color: "rgba(255, 255, 255, 0.85)" }}
+            aria-label="Background performance"
+            aria-haspopup="listbox"
+            aria-expanded={perfMenuOpen}
+            onClick={() => setPerfMenuOpen((o) => !o)}
+          >
+            <Gauge className="w-4 h-4" strokeWidth={2} />
+            <span className="text-xs font-mono hidden sm:inline capitalize">{performancePref}</span>
+          </button>
+          {perfMenuOpen && onPerformancePrefChange && (
+            <div
+              className="absolute top-full right-0 mt-2 w-32 carbon-fiber border rounded-lg shadow-xl p-1 z-[100]"
+              style={{ borderColor: "rgba(220, 38, 38, 0.5)" }}
+              role="listbox"
+              aria-label="Performance mode"
+            >
+              {PERF_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  role="option"
+                  aria-selected={performancePref === opt.value}
+                  className={`block w-full text-left text-xs font-mono py-2 px-3 rounded capitalize transition-colors ${
+                    performancePref === opt.value ? "glow-red" : ""
+                  }`}
+                  style={{
+                    color: performancePref === opt.value ? "#DC2626" : "#FFFFFF",
+                  }}
+                  onClick={() => {
+                    onPerformancePrefChange(opt.value);
+                    setPerfMenuOpen(false);
+                  }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </nav>
     </header>
   );

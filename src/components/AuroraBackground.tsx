@@ -1,6 +1,11 @@
 import { motion, useReducedMotion } from "framer-motion";
 
-export default function AuroraBackground() {
+export interface AuroraBackgroundProps {
+  /** When true, reduces blur and layers for performance (e.g. light mode). */
+  lightMode?: boolean;
+}
+
+export default function AuroraBackground({ lightMode = false }: AuroraBackgroundProps) {
   const shouldReduceMotion = useReducedMotion();
 
   // Blob animation variants
@@ -78,10 +83,11 @@ export default function AuroraBackground() {
           borderRadius: "50%",
           background:
             "radial-gradient(circle, rgba(99, 102, 241, 0.6) 0%, rgba(79, 70, 229, 0.5) 50%, transparent 70%)",
-          filter: "blur(80px)",
+          filter: lightMode ? "none" : "blur(80px)",
           top: "10%",
           left: "10%",
-          opacity: 0.7, // Temporarily increased from 0.35
+          opacity: lightMode ? 0.4 : 0.7,
+          willChange: lightMode ? "auto" : "transform",
         }}
         variants={blobVariants}
         animate={shouldReduceMotion ? {} : "animate"}
@@ -96,10 +102,11 @@ export default function AuroraBackground() {
           borderRadius: "50%",
           background:
             "radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, rgba(124, 58, 237, 0.5) 50%, transparent 70%)",
-          filter: "blur(80px)",
+          filter: lightMode ? "none" : "blur(80px)",
           top: "60%",
           right: "15%",
-          opacity: 0.65, // Temporarily increased from 0.3
+          opacity: lightMode ? 0.35 : 0.65,
+          willChange: lightMode ? "auto" : "transform",
         }}
         variants={blobVariants2}
         animate={shouldReduceMotion ? {} : "animate"}
@@ -114,10 +121,11 @@ export default function AuroraBackground() {
           borderRadius: "50%",
           background:
             "radial-gradient(circle, rgba(67, 56, 202, 0.55) 0%, rgba(100, 116, 139, 0.45) 50%, transparent 70%)",
-          filter: "blur(80px)",
+          filter: lightMode ? "none" : "blur(80px)",
           bottom: "20%",
           left: "50%",
-          opacity: 0.6, // Temporarily increased from 0.25
+          opacity: lightMode ? 0.3 : 0.6,
+          willChange: lightMode ? "auto" : "transform",
         }}
         variants={blobVariants3}
         animate={shouldReduceMotion ? {} : "animate"}
@@ -132,10 +140,11 @@ export default function AuroraBackground() {
           borderRadius: "50%",
           background:
             "radial-gradient(circle, rgba(99, 102, 241, 0.5) 0%, rgba(139, 92, 246, 0.45) 50%, transparent 70%)",
-          filter: "blur(80px)",
+          filter: lightMode ? "none" : "blur(80px)",
           top: "40%",
           left: "60%",
-          opacity: 0.65, // Temporarily increased from 0.28
+          opacity: lightMode ? 0.3 : 0.65,
+          willChange: lightMode ? "auto" : "transform",
         }}
         variants={blobVariants4}
         animate={shouldReduceMotion ? {} : "animate"}

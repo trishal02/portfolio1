@@ -6,8 +6,9 @@ const DEBUG_BG = false;
 export default function CarsBackground() {
   const shouldReduceMotion = useReducedMotion();
 
-  // Generate 20 cars with varied properties
-  const cars = Array.from({ length: 20 }, (_, i) => {
+  // 8 cars for performance (was 20); use more only in debug
+  const carCount = DEBUG_BG ? 20 : 8;
+  const cars = Array.from({ length: carCount }, (_, i) => {
     // Each car starts 0.5s after the previous one
     const delay = i * 0.5;
     
@@ -100,17 +101,18 @@ export default function CarsBackground() {
         </div>
       )}
 
-      {/* Render 20 animated cars */}
+      {/* Animated cars: 8 by default; no trail blur or drop-shadow for performance */}
       {cars.map((car) => (
         <motion.div
           key={car.id}
           className="absolute"
           style={{
             top: `${car.yPosition}%`,
+            willChange: "transform",
           }}
           initial={{ x: "-10%" }}
           animate={{
-            x: "110%", // Move from left edge to right edge
+            x: "110%",
           }}
           transition={{
             duration: car.duration,
@@ -119,35 +121,28 @@ export default function CarsBackground() {
             delay: car.delay,
           }}
         >
-          {/* Motion blur trail (lagging blurred duplicate) */}
-          <motion.div
-            className="absolute"
-            style={{
-              filter: "blur(4px)",
-              opacity: car.opacity * 0.4,
-            }}
-            initial={{ x: "-10%" }}
-            animate={{
-              x: "110%",
-            }}
-            transition={{
-              duration: car.duration,
-              repeat: Infinity,
-              ease: "linear",
-              delay: car.delay + 0.1, // Slight delay for trail effect
-            }}
-          >
-            <CarIcon color={car.color} opacity={car.opacity} />
-          </motion.div>
+          {/* Trail blur only in debug for performance */}
+          {DEBUG_BG && (
+            <motion.div
+              className="absolute"
+              style={{
+                filter: "blur(4px)",
+                opacity: car.opacity * 0.4,
+              }}
+              initial={{ x: "-10%" }}
+              animate={{ x: "110%" }}
+              transition={{
+                duration: car.duration,
+                repeat: Infinity,
+                ease: "linear",
+                delay: car.delay + 0.1,
+              }}
+            >
+              <CarIcon color={car.color} opacity={car.opacity} />
+            </motion.div>
+          )}
 
-          {/* Main car with glow */}
-          <div
-            className="relative"
-            style={{
-              filter: `drop-shadow(0 0 4px ${car.color})`,
-              opacity: car.opacity,
-            }}
-          >
+          <div className="relative" style={{ opacity: car.opacity }}>
             <CarIcon color={car.color} opacity={1} />
           </div>
         </motion.div>
