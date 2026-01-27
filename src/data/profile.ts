@@ -35,7 +35,7 @@ export const profileData = {
     first: "TRISHAL",
     last: "REDDY",
   },
-  tagline: "Software Developer | C++ & Python | Distributed Systems",
+  tagline: "Software Developer | Data Engineer | C++ & Python | Distributed Systems",
   about: `I'm a software developer who likes building systems that don't just work — they stay reliable under load. I focus on backend engineering, distributed-systems fundamentals, and cloud deployments, and I enjoy turning messy requirements into clean, maintainable products.
 
 Outside of code, I'm a national-level wrestling athlete — which shows up in how I work: disciplined execution, consistent iteration, and calm under pressure. I'm currently building projects across AI + infrastructure and looking for roles where I can ship impactful software and improve reliability at scale.`,
